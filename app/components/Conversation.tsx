@@ -289,6 +289,7 @@ export default function Conversation(): JSX.Element {
         if (isListening) {
           const nextBlob = firstBlob;
           if (nextBlob) {
+            console.log(nextBlob);
             connection?.send(nextBlob);
           }
 
