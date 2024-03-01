@@ -6,7 +6,7 @@ import {
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -35,7 +35,7 @@ const NowPlayingContextProvider = ({
   );
   const { updateItem } = usePlayQueue();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (nowPlaying && player.current) {
       player.current.src = window.URL.createObjectURL(nowPlaying.blob);
       player.current.addEventListener("canplaythrough", function () {
@@ -57,7 +57,7 @@ const NowPlayingContextProvider = ({
     <NowPlayingContext.Provider
       value={{ nowPlaying, setNowPlaying, clearNowPlaying, player }}
     >
-      {children}
+      <>{children}</>
     </NowPlayingContext.Provider>
   );
 };
