@@ -12,7 +12,7 @@ export default async function Home() {
           <header className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8 flex items-center justify-between">
             <div>
               <a className="flex items-center" href="/">
-                <h1 className="mr-2 -mb-px font-favorit text-2xl font-semibold">
+                <h1 className="mr-2 -mb-px font-favorit text-2xl font-semibold text-white">
                   Powered by
                 </h1>
                 <Image
