@@ -289,7 +289,6 @@ export default function Conversation(): JSX.Element {
         if (isListening) {
           const nextBlob = firstBlob;
           if (nextBlob) {
-            console.log(nextBlob);
             connection?.send(nextBlob);
           }
 
@@ -299,7 +298,7 @@ export default function Conversation(): JSX.Element {
         const waiting = setTimeout(() => {
           clearTimeout(waiting);
           setProcessing(false);
-        }, 250);
+        }, 200);
       }
     };
 

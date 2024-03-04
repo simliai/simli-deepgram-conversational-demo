@@ -53,7 +53,6 @@ const MicrophoneContextProvider = ({
       });
 
       const microphone = new MediaRecorder(userMedia);
-      microphone.start(500);
 
       setMicrophone(microphone);
     }
@@ -75,17 +74,21 @@ const MicrophoneContextProvider = ({
     };
   }, [enqueueBlob, microphone, microphoneOpen]);
 
-  useEffect(() => {
-    console.log(queue);
-  }, [queue]);
-
   const stopMicrophone = useCallback(() => {
+    if (microphone?.state === "recording") microphone?.pause();
+
     setMicrophoneOpen(false);
-  }, []);
+  }, [microphone]);
 
   const startMicrophone = useCallback(() => {
+    if (microphone?.state === "paused") {
+      microphone?.resume();
+    } else {
+      microphone?.start(250);
+    }
+
     setMicrophoneOpen(true);
-  }, []);
+  }, [microphone]);
 
   return (
     <MicrophoneContext.Provider
