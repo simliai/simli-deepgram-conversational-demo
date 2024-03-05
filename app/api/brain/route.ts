@@ -1,12 +1,13 @@
-import OpenAI from "openai";
-import { OpenAIStream, StreamingTextResponse } from "ai";
+import Anthropic from '@anthropic-ai/sdk';
+import { AnthropicStream, StreamingTextResponse } from "ai";
+import { systemContent } from "../../lib/constants";
 
 // Optional, but recommended: run on the edge runtime.
 // See https://vercel.com/docs/concepts/functions/edge-functions
 export const runtime = "edge";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+const anthropic = new Anthropic({
+  apiKey: process.env.ANTHROPIC_API_KEY!,
 });
 
 export async function POST(req: Request) {
@@ -14,15 +15,16 @@ export async function POST(req: Request) {
   const { messages } = await req.json();
   const start = Date.now();
 
-  // Request the OpenAI API for the response based on the prompt
+  // Request the Claude API for the response based on the prompt
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo-0125",
-      stream: true,
+    const response = await anthropic.messages.stream({
       messages: messages,
+      model: 'claude-3-opus-20240229',
+      max_tokens: 1024,
+      system: systemContent // Claude requires the system prompt here
     });
 
-    const stream = OpenAIStream(response);
+    const stream = AnthropicStream(response);
 
     return new StreamingTextResponse(stream, {
       headers: {

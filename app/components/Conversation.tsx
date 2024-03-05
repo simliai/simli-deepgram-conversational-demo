@@ -13,11 +13,11 @@ import { ChatBubble } from "./ChatBubble";
 import { Controls } from "./Controls";
 import { InitialLoad } from "./InitialLoad";
 import { RightBubble } from "./RightBubble";
+import { contextualGreeting, utteranceText } from "../lib/helpers";
 import { systemContent } from "../lib/constants";
 import { Message, useChat } from "ai/react";
 import { useQueue } from "@uidotdev/usehooks";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { contextualGreeting, utteranceText } from "../lib/helpers";
 import { useNowPlaying } from "../context/NowPlaying";
 import { usePlayQueue } from "../context/PlayQueue";
 import { NextUIProvider, Spinner } from "@nextui-org/react";
@@ -145,8 +145,8 @@ export default function Conversation(): JSX.Element {
     api: "/api/brain",
     initialMessages: [
       {
-        role: "system",
-        content: systemContent,
+        role: "user",
+        content: 'Hello', // User must be first to speak using Claude's API
       } as Message,
       greeting,
     ],

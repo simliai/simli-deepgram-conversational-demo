@@ -17,7 +17,7 @@ Check out our [KNOWN ISSUES](./KNOWN_ISSUES.md) before reporting.
 ## Demo features
 
 - Capture streaming audio using [Deepgram Streaming Speech to Text](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
-- Natural Language responses using an OpenAI LLM.
+- Natural Language responses using an Anthropic's Claude Opus LLM.
 - Speech to Text conversion using [Deepgram Aura Text to Speech](https://developers.deepgram.com/docs/text-to-speech).
 - A quirky British sense of humour. 🇬🇧
 
@@ -54,12 +54,12 @@ Copy the code from `sample.env.local` and create a new file called `.env.local`.
 ```bash
 DEEPGRAM_STT_DOMAIN=https://api.deepgram.com
 DEEPGRAM_API_KEY=YOUR-DG-API-KEY
-OPENAI_API_KEY=YOUR-OPENAI-API-KEY
+ANTHROPIC_API_KEY=YOUR-ANTHROPIC-API-KEY
 ```
 
 1. For `DEEPGRAM_API_KEY` paste in the key you generated in the [Deepgram console](https://console.deepgram.com/).
 2. Set `DEEPGRAM_STT_DOMAIN` to be `https://api.deepgram.com`.
-3. `OPENAI_API_KEY` should be an OpenAI API Key that can access the chat completions API.
+3. `ANTHROPIC_API_KEY` should be an Anthropic API Key that can access the chat completions API.
 
 #### Run the application
 

@@ -1,4 +1,23 @@
-import { contextualHello } from "./helpers";
+import moment from "moment";
+
+/**
+ * @returns {string}
+ */
+const contextualHello = () => {
+  const hour = moment().hour();
+
+  if (hour > 3 && hour <= 12) {
+    return "Good morning";
+  } else if (hour > 12 && hour <= 15) {
+    return "Good afternoon";
+  } else if (hour > 15 && hour <= 20) {
+    return "Good evening";
+  } else if (hour > 20 || hour <= 3) {
+    return "You're up late";
+  } else {
+    return "Hello";
+  }
+};
 
 export const systemContent = `
 # Deepgram AI Persona

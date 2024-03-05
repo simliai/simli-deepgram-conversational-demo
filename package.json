@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.16.1",
     "@deepgram/sdk": "^3.2.0-alpha.1",
     "@fullstory/browser": "^2.0.3",
     "@next/third-parties": "^14.1.0",
@@ -22,7 +23,6 @@
     "classnames": "^2.5.1",
     "moment": "^2.30.1",
     "next": "^14.1.0",
-    "openai": "^4.26.1",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
