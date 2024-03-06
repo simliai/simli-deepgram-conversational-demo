@@ -40,11 +40,20 @@ const NowPlayingContextProvider = ({
     const playElem: HTMLAudioElement = document.getElementById(
       "playElem"
     ) as HTMLAudioElement;
-    console.log(playElem);
-    if (nowPlaying) {
+
+    if (nowPlaying && playElem) {
       const data = window.URL.createObjectURL(nowPlaying.blob);
       playElem.src = data;
+      playElem.addEventListener("canplay", function () {
+        this.play();
+      });
+
+      playElem.addEventListener("ended", () => {
+        updateItem(nowPlaying.id, { played: true });
+        clearNowPlaying();
+      });
     }
+
     // if (nowPlaying && player.current) {
     //   player.current.src = window.URL.createObjectURL(nowPlaying.blob);
     //   player.current.addEventListener("canplaythrough", function () {
@@ -66,7 +75,9 @@ const NowPlayingContextProvider = ({
     <NowPlayingContext.Provider
       value={{ nowPlaying, setNowPlaying, clearNowPlaying, player }}
     >
-      <audio id="playElem" controls autoPlay src={silentMp3} />
+      <audio id="playElem" controls style={{ display: "none" }}>
+        <source src={silentMp3} type="audio/mp3" />
+      </audio>
       {children}
     </NowPlayingContext.Provider>
   );
