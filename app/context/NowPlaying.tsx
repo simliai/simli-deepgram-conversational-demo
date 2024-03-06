@@ -12,6 +12,7 @@ import {
 } from "react";
 import { AudioPacket } from "../lib/types";
 import { usePlayQueue } from "./PlayQueue";
+import { silentMp3 } from "../lib/constants";
 
 type NowPlayingContext = {
   nowPlaying: AudioPacket | undefined;
@@ -36,17 +37,25 @@ const NowPlayingContextProvider = ({
   const { updateItem } = usePlayQueue();
 
   useEffect(() => {
-    if (nowPlaying && player.current) {
-      player.current.src = window.URL.createObjectURL(nowPlaying.blob);
-      player.current.addEventListener("canplaythrough", function () {
-        this.play();
-      });
-
-      player.current.addEventListener("ended", () => {
-        updateItem(nowPlaying.id, { played: true });
-        clearNowPlaying();
-      });
+    const playElem: HTMLAudioElement = document.getElementById(
+      "playElem"
+    ) as HTMLAudioElement;
+    console.log(playElem);
+    if (nowPlaying) {
+      const data = window.URL.createObjectURL(nowPlaying.blob);
+      playElem.src = data;
     }
+    // if (nowPlaying && player.current) {
+    //   player.current.src = window.URL.createObjectURL(nowPlaying.blob);
+    //   player.current.addEventListener("canplaythrough", function () {
+    //     this.play();
+    //   });
+
+    //   player.current.addEventListener("ended", () => {
+    //     updateItem(nowPlaying.id, { played: true });
+    //     clearNowPlaying();
+    //   });
+    // }
   });
 
   const clearNowPlaying = () => {
@@ -57,6 +66,7 @@ const NowPlayingContextProvider = ({
     <NowPlayingContext.Provider
       value={{ nowPlaying, setNowPlaying, clearNowPlaying, player }}
     >
+      <audio id="playElem" controls autoPlay src={silentMp3} />
       {children}
     </NowPlayingContext.Provider>
   );
