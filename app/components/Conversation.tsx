@@ -410,7 +410,6 @@ export default function Conversation(): JSX.Element {
   useEffect(() => {
     if (messageMarker.current) {
       messageMarker.current.scrollIntoView({
-        block: "end",
         behavior: "auto",
       });
     }
