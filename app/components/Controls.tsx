@@ -42,13 +42,14 @@ export const Controls = ({
   const submitter = useCallback(
     (e: any) => {
       if (nowPlaying) {
-        player?.current?.pause();
-        clearNowPlaying();
+        player?.pause();
         updateItem(nowPlaying.id, { played: true });
+        clearNowPlaying();
       }
       handleSubmit(e);
     },
-    [clearNowPlaying, handleSubmit, nowPlaying, player, updateItem]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [clearNowPlaying, handleSubmit, nowPlaying, updateItem]
   );
 
   return (
@@ -106,7 +107,7 @@ export const Controls = ({
 
           <span className="rounded-e-full bg-gradient-to-l to-[#13EF93]/50 from-[#149AFB]/80 pe-0.5 py-0.5">
             <Tooltip showArrow content="Send a message.">
-              <button className="w-20 sm:w-24 py-4 px-2 sm:px-8 rounded-e-full font-bold bg-[#101014] betterhover:hover:bg-transparent text-light-900 text-sm sm:text-base flex items-center justify-center">
+              <button className="w-20 sm:w-24 py-4 px-2 sm:px-8 rounded-e-full font-bold bg-[#101014] text-light-900 text-sm sm:text-base flex items-center justify-center">
                 {/* <span>Send text</span> */}
                 <SendIcon className="h-6 w-6" />
               </button>

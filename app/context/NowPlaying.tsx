@@ -18,7 +18,8 @@ type NowPlayingContext = {
   nowPlaying: AudioPacket | undefined;
   setNowPlaying: Dispatch<SetStateAction<AudioPacket | undefined>>;
   clearNowPlaying: () => void;
-  player: MutableRefObject<HTMLAudioElement | undefined>;
+  // player: MutableRefObject<HTMLAudioElement>;
+  player: HTMLAudioElement | undefined;
 };
 
 interface NowPlayingContextInterface {
@@ -30,42 +31,48 @@ const NowPlayingContext = createContext({} as NowPlayingContext);
 const NowPlayingContextProvider = ({
   children,
 }: NowPlayingContextInterface) => {
+  // const player = useRef(
+  //   document.getElementById("playElem") as HTMLAudioElement
+  // );
+  // const source = useRef(
+  //   document.getElementById("sourceElem") as HTMLSourceElement
+  // );
+  const [player, setPlayer] = useState<HTMLAudioElement>();
   const [nowPlaying, setNowPlaying] = useState<AudioPacket>();
-  const player = useRef<HTMLAudioElement | undefined>(
-    typeof Audio !== "undefined" ? new Audio("") : undefined
-  );
   const { updateItem } = usePlayQueue();
 
   useEffect(() => {
-    const playElem: HTMLAudioElement = document.getElementById(
+    const player: HTMLAudioElement = document.getElementById(
       "playElem"
     ) as HTMLAudioElement;
+    const source: HTMLSourceElement = document.getElementById(
+      "sourceElem"
+    ) as HTMLSourceElement;
 
-    if (nowPlaying && playElem) {
+    setPlayer(player);
+
+    if (nowPlaying && player && source) {
       const data = window.URL.createObjectURL(nowPlaying.blob);
-      playElem.src = data;
-      playElem.addEventListener("canplay", function () {
+      source.src = data;
+      source.type = "audio/mp3";
+
+      /**
+       * Required to make iOS devices load the audio from the blob URL.
+       */
+      player.load();
+
+      player.addEventListener("canplaythrough", function () {
         this.play();
       });
 
-      playElem.addEventListener("ended", () => {
+      player.addEventListener("ended", () => {
         updateItem(nowPlaying.id, { played: true });
         clearNowPlaying();
       });
     }
 
-    // if (nowPlaying && player.current) {
-    //   player.current.src = window.URL.createObjectURL(nowPlaying.blob);
-    //   player.current.addEventListener("canplaythrough", function () {
-    //     this.play();
-    //   });
-
-    //   player.current.addEventListener("ended", () => {
-    //     updateItem(nowPlaying.id, { played: true });
-    //     clearNowPlaying();
-    //   });
-    // }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nowPlaying, updateItem]);
 
   const clearNowPlaying = () => {
     setNowPlaying(undefined);
@@ -75,8 +82,8 @@ const NowPlayingContextProvider = ({
     <NowPlayingContext.Provider
       value={{ nowPlaying, setNowPlaying, clearNowPlaying, player }}
     >
-      <audio id="playElem" controls style={{ display: "none" }}>
-        <source src={silentMp3} type="audio/mp3" />
+      <audio id="playElem">
+        <source id="sourceElem" src={silentMp3} type="audio/mp3" />
       </audio>
       {children}
     </NowPlayingContext.Provider>
