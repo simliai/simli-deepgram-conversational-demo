@@ -15,11 +15,12 @@ export const InitialLoad = ({ fn }: { fn: () => void }) => {
           <h2 className="font-favorit mt-2 block font-bold text-xl text-gray-100">
             Welcome to Deepgram&apos;s
             <br />
-            AI Agent Demo.
+            AI Agent Tech Demo.
           </h2>
           <div className="flex justify-center mt-4">
             <ul className="list-disc list-inside marker:text-[#13EF93]">
               <li className="text-center">Nova-2 Speech-to-Text</li>
+              <li className="text-center">OpenAI GPT-3.5 Turbo</li>
               <li className="text-center">Aura Text-to-Speech</li>
             </ul>
           </div>
