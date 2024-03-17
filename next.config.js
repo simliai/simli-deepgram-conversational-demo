@@ -6,6 +6,12 @@ const nextConfig = {
       use: ["@svgr/webpack"],
     });
 
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      sharp$: false,
+      "onnxruntime-node$": false,
+    };
+
     return config;
   },
   reactStrictMode: false,

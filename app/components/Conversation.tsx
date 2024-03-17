@@ -26,6 +26,8 @@ import { MessageMetadata } from "../lib/types";
 import { useMessageData } from "../context/MessageMetadata";
 import { useDeepgram } from "../context/Deepgram";
 
+import { useMicVAD } from "@ricky0123/vad-react";
+
 /**
  * Conversation element that contains the conversational AI app.
  * @returns {JSX.Element}
@@ -44,7 +46,21 @@ export default function Conversation(): JSX.Element {
     queueSize: microphoneQueueSize,
     firstBlob,
     removeBlob,
+    stream,
   } = useMicrophone();
+
+  const vad = useMicVAD({
+    startOnLoad: true,
+    stream,
+    onSpeechStart: () => {
+      console.log("speech_started");
+    },
+  });
+
+  useEffect(() => {
+    vad.start();
+    console.log(vad.listening, vad.errored);
+  }, [vad.listening, vad.errored]);
 
   /**
    * Queues
@@ -127,7 +143,7 @@ export default function Conversation(): JSX.Element {
         id: "welcome",
         role: "assistant",
         content: contextualGreeting(),
-      } as Message),
+      }) as Message,
     []
   );
 
@@ -435,6 +451,10 @@ export default function Conversation(): JSX.Element {
           <div className="flex flex-row h-full w-full overflow-x-hidden">
             <div className="flex flex-col flex-auto h-full">
               <div className="flex flex-col justify-between h-full">
+                {vad.listening && <div>VAD is running</div>}
+                {!vad.listening && <div>VAD is NOT running</div>}
+                {vad.userSpeaking && <div>user speaking</div>}
+                {!vad.userSpeaking && <div>user not speaking</div>}
                 <div
                   className={`flex flex-col h-full overflow-hidden ${
                     initialLoad ? "justify-center" : "justify-end"
