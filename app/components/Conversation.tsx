@@ -52,14 +52,43 @@ export default function Conversation(): JSX.Element {
     stream,
     onSpeechStart: () => {
       // barge-in
+      console.log("barging in");
+
       if (nowPlaying) {
         player?.pause();
-        updateItem(nowPlaying?.id, { played: true });
+        updateItem(nowPlaying.id, { played: true });
         clearNowPlaying();
       }
     },
     onSpeechEnd: () => {
       console.log("ended");
+
+      // -  /**
+      // -   * incomplete speech final failsafe
+      // -   */
+      // -  useEffect(() => {
+      // -    if (!lastUtterance || !currentUtterance) return;
+      // -
+      // -    const interval = setInterval(() => {
+      // -      const timeLived = Date.now() - lastUtterance;
+      // -
+      // -      if (currentUtterance !== "" && timeLived > 1500) {
+      // -        console.log("failsafe fires! pew pew!!");
+      // -
+      // -        append({
+      // -          role: "user",
+      // -          content: currentUtterance,
+      // -        });
+      // -        clearTranscriptParts();
+      // -        setCurrentUtterance(undefined);
+      // -      }
+      // -    }, 100);
+      // -
+      // -    return () => {
+      // -      clearInterval(interval);
+      // -    };
+      // -    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // -  }, [lastUtterance, currentUtterance]);
     },
   });
 
