@@ -1,13 +1,10 @@
 "use client";
 
 import {
-  CreateProjectKeyResponse,
   LiveClient,
   LiveConnectionState,
   LiveTranscriptionEvent,
   LiveTranscriptionEvents,
-  UtteranceEndEvent,
-  createClient,
 } from "@deepgram/sdk";
 import { ChatBubble } from "./ChatBubble";
 import { Controls } from "./Controls";
@@ -38,7 +35,8 @@ export default function Conversation(): JSX.Element {
    */
   const { ttsOptions, connection, connectionReady } = useDeepgram();
   const { playQueue, enqueueItem, updateItem } = usePlayQueue();
-  const { nowPlaying, setNowPlaying } = useNowPlaying();
+  const { nowPlaying, setNowPlaying, player, clearNowPlaying } =
+    useNowPlaying();
   const { addMessageData } = useMessageData();
   const {
     microphoneOpen,
@@ -49,18 +47,21 @@ export default function Conversation(): JSX.Element {
     stream,
   } = useMicrophone();
 
-  const vad = useMicVAD({
+  useMicVAD({
     startOnLoad: true,
     stream,
     onSpeechStart: () => {
-      console.log("speech_started");
+      // barge-in
+      if (nowPlaying) {
+        player?.pause();
+        updateItem(nowPlaying?.id, { played: true });
+        clearNowPlaying();
+      }
+    },
+    onSpeechEnd: () => {
+      console.log("ended");
     },
   });
-
-  useEffect(() => {
-    vad.start();
-    console.log(vad.listening, vad.errored);
-  }, [vad.listening, vad.errored]);
 
   /**
    * Queues
@@ -222,8 +223,6 @@ export default function Conversation(): JSX.Element {
     ttsOptions?.model,
   ]);
 
-  const { player, clearNowPlaying } = useNowPlaying();
-
   useEffect(() => {
     const onTranscript = (data: LiveTranscriptionEvent) => {
       let content = utteranceText(data);
@@ -306,49 +305,6 @@ export default function Conversation(): JSX.Element {
       setCurrentUtterance(undefined);
     }
   }, [getCurrentUtterance, clearTranscriptParts, append]);
-
-  /**
-   * incomplete speech final failsafe
-   */
-  useEffect(() => {
-    if (!lastUtterance || !currentUtterance) return;
-
-    const interval = setInterval(() => {
-      const timeLived = Date.now() - lastUtterance;
-
-      if (currentUtterance !== "" && timeLived > 1500) {
-        console.log("failsafe fires! pew pew!!");
-
-        append({
-          role: "user",
-          content: currentUtterance,
-        });
-        clearTranscriptParts();
-        setCurrentUtterance(undefined);
-      }
-    }, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lastUtterance, currentUtterance]);
-
-  /**
-   * barge-in
-   */
-  useEffect(() => {
-    if (!currentUtterance || currentUtterance === "") return;
-
-    console.log("barging in");
-
-    if (nowPlaying) {
-      player?.pause();
-      updateItem(nowPlaying.id, { played: true });
-      clearNowPlaying();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUtterance, clearNowPlaying, nowPlaying, updateItem]);
 
   /**
    * magic microphone audio queue processing
@@ -451,10 +407,6 @@ export default function Conversation(): JSX.Element {
           <div className="flex flex-row h-full w-full overflow-x-hidden">
             <div className="flex flex-col flex-auto h-full">
               <div className="flex flex-col justify-between h-full">
-                {vad.listening && <div>VAD is running</div>}
-                {!vad.listening && <div>VAD is NOT running</div>}
-                {vad.userSpeaking && <div>user speaking</div>}
-                {!vad.userSpeaking && <div>user not speaking</div>}
                 <div
                   className={`flex flex-col h-full overflow-hidden ${
                     initialLoad ? "justify-center" : "justify-end"

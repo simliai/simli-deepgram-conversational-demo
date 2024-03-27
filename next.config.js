@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const CopyPlugin = require("copy-webpack-plugin");
 
 const wasmPaths = [
@@ -9,10 +10,9 @@ const wasmPaths = [
   "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.jsep.wasm",
   "./node_modules/onnxruntime-web/dist/ort-training-wasm-simd.wasm",
   "./node_modules/@ricky0123/vad-web/dist/silero_vad.onnx",
-  "./node_modules/@ricky0123/vad-web/dist/vad.worklet.bundle.min.js"
+  "./node_modules/@ricky0123/vad-web/dist/vad.worklet.bundle.min.js",
 ];
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack(config) {
     config.module.rules.push({
@@ -27,12 +27,16 @@ const nextConfig = {
     };
 
     config.plugins.push(
-      new CopyPlugin({ patterns: wasmPaths.map(p => ({ from: p, to: "static/chunks/app" })) })
+      new CopyPlugin({
+        patterns: wasmPaths.map((p) => ({ from: p, to: "static/chunks/app" })),
+      })
     );
 
     // vercel
     config.plugins.push(
-      new CopyPlugin({ patterns: wasmPaths.map(p => ({ from: p, to: "static/chunks" })) })
+      new CopyPlugin({
+        patterns: wasmPaths.map((p) => ({ from: p, to: "static/chunks" })),
+      })
     );
 
     return config;
