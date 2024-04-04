@@ -1,14 +1,14 @@
-import { useCallback, useMemo } from "react";
-import { isTablet, isMobile } from "react-device-detect";
+import { Message } from "ai/react";
+import { Tooltip } from "@nextui-org/react";
+import { useCallback } from "react";
+
+import { Download } from "./Download";
 import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { SendIcon } from "./icons/SendIcon";
-import { useNowPlaying } from "../context/NowPlaying";
-import { usePlayQueue } from "../context/PlayQueue";
-import { useMicrophone } from "../context/Microphone";
-import { Download } from "./Download";
-import { Message } from "ai/react";
 import { Settings } from "./Settings";
-import { Tooltip } from "@nextui-org/react";
+import { useMicrophone } from "../context/Microphone";
+import { usePlayQueue } from "../context/PlayQueue";
+import { useNowPlaying } from "react-nowplaying";
 
 export const Controls = ({
   input,
@@ -36,20 +36,15 @@ export const Controls = ({
     [microphoneOpen, startMicrophone, stopMicrophone]
   );
 
-  const { updateItem } = usePlayQueue();
-  const { nowPlaying, clearNowPlaying, player } = useNowPlaying();
+  const { stop: stopAudio } = useNowPlaying();
 
   const submitter = useCallback(
     (e: any) => {
-      if (nowPlaying) {
-        player?.pause();
-        updateItem(nowPlaying.id, { played: true });
-        clearNowPlaying();
-      }
+      stopAudio();
       handleSubmit(e);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [clearNowPlaying, handleSubmit, nowPlaying, updateItem]
+    []
   );
 
   return (

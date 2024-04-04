@@ -12,6 +12,5 @@ export interface AudioPacket {
   blob: Blob;
   latency: number;
   networkLatency: number;
-  played: boolean;
   model: string;
 }

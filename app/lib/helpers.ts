@@ -81,25 +81,6 @@ const chunkStringWithMinLength = (
   return chunks.filter((chunk) => chunk.trim() !== "");
 };
 
-/**
- * @returns {string}
- */
-const contextualHello = () => {
-  const hour = moment().hour();
-
-  if (hour > 3 && hour <= 12) {
-    return "Good morning";
-  } else if (hour > 12 && hour <= 15) {
-    return "Good afternoon";
-  } else if (hour > 15 && hour <= 20) {
-    return "Good evening";
-  } else if (hour > 20 || hour <= 3) {
-    return "You're up late";
-  } else {
-    return "Hello";
-  }
-};
-
 const sprintf = (template: string, ...args: any[]) => {
   return template.replace(/%[sdf]/g, (match: any) => {
     const arg = args.shift();
@@ -128,9 +109,28 @@ const contextualGreeting = () => {
   return sprintf(greeting.text, ...greeting.strings);
 };
 
+/**
+ * @returns {string}
+ */
+const contextualHello = () => {
+  const hour = moment().hour();
+
+  if (hour > 3 && hour <= 12) {
+    return "Good morning";
+  } else if (hour > 12 && hour <= 15) {
+    return "Good afternoon";
+  } else if (hour > 15 && hour <= 20) {
+    return "Good evening";
+  } else if (hour > 20 || hour <= 3) {
+    return "You're up late";
+  } else {
+    return "Hello";
+  }
+};
+
 export {
-  contextualHello,
   contextualGreeting,
+  contextualHello,
   chunkStringWithMinLength,
   getUserMessages,
   getConversationMessages,

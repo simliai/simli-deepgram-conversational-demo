@@ -6,24 +6,24 @@ import {
   LiveTranscriptionEvent,
   LiveTranscriptionEvents,
 } from "@deepgram/sdk";
-import { ChatBubble } from "./ChatBubble";
-import { Controls } from "./Controls";
-import { InitialLoad } from "./InitialLoad";
-import { RightBubble } from "./RightBubble";
-import { systemContent } from "../lib/constants";
 import { Message, useChat } from "ai/react";
+import { NextUIProvider, Spinner } from "@nextui-org/react";
+import { useMicVAD } from "@ricky0123/vad-react";
+import { useNowPlaying } from "react-nowplaying";
 import { useQueue } from "@uidotdev/usehooks";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { contextualGreeting, utteranceText } from "../lib/helpers";
-import { useNowPlaying } from "../context/NowPlaying";
-import { usePlayQueue } from "../context/PlayQueue";
-import { NextUIProvider, Spinner } from "@nextui-org/react";
-import { useMicrophone } from "../context/Microphone";
-import { MessageMetadata } from "../lib/types";
-import { useMessageData } from "../context/MessageMetadata";
-import { useDeepgram } from "../context/Deepgram";
 
-import { useMicVAD } from "@ricky0123/vad-react";
+import { ChatBubble } from "./ChatBubble";
+import { contextualGreeting, utteranceText } from "../lib/helpers";
+import { Controls } from "./Controls";
+import { InitialLoad } from "./InitialLoad";
+import { MessageMetadata } from "../lib/types";
+import { RightBubble } from "./RightBubble";
+import { systemContent } from "../lib/constants";
+import { useDeepgram } from "../context/Deepgram";
+import { useMessageData } from "../context/MessageMetadata";
+import { useMicrophone } from "../context/Microphone";
+import { usePlayQueue } from "../context/PlayQueue";
 
 /**
  * Conversation element that contains the conversational AI app.
@@ -34,9 +34,8 @@ export default function Conversation(): JSX.Element {
    * Custom context providers
    */
   const { ttsOptions, connection, connectionReady } = useDeepgram();
-  const { playQueue, enqueueItem, updateItem } = usePlayQueue();
-  const { nowPlaying, setNowPlaying, player, clearNowPlaying } =
-    useNowPlaying();
+  const { enqueueItem } = usePlayQueue();
+  const { player, stop: stopAudio, play: startAudio } = useNowPlaying();
   const { addMessageData } = useMessageData();
   const {
     microphoneOpen,
@@ -52,16 +51,14 @@ export default function Conversation(): JSX.Element {
     stream,
     onSpeechStart: () => {
       // barge-in
-      console.log("barging in");
+      console.log("barging in! SHH!");
 
-      if (nowPlaying) {
-        player?.pause();
-        updateItem(nowPlaying.id, { played: true });
-        clearNowPlaying();
+      if (!player?.ended) {
+        stopAudio();
       }
     },
     onSpeechEnd: () => {
-      console.log("ended");
+      console.log("failsafe fires! pew pew!!");
 
       // -  /**
       // -   * incomplete speech final failsafe
@@ -110,16 +107,11 @@ export default function Conversation(): JSX.Element {
   /**
    * State
    */
-  // const [apiKey, setApiKey] = useState<CreateProjectKeyResponse>();
-  // const [connection, setConnection] = useState<LiveClient>();
   const [initialLoad, setInitialLoad] = useState(true);
-  // const [isListening, setListening] = useState(false);
-  // const [isLoading, setLoading] = useState(true);
-  // const [isLoadingKey, setLoadingKey] = useState(true);
   const [isProcessing, setProcessing] = useState(false);
 
   /**
-   * Contextual functions
+   * Request audio from API
    */
   const requestTtsAudio = useCallback(
     async (message: Message) => {
@@ -134,16 +126,20 @@ export default function Conversation(): JSX.Element {
 
       const headers = res.headers;
 
+      const blob = await res.blob();
+
+      startAudio(blob, "audio/mp3", message.id);
+
       enqueueItem({
         id: message.id,
         blob: await res.blob(),
         latency: Number(headers.get("X-DG-Latency")) ?? Date.now() - start,
         networkLatency: Date.now() - start,
-        played: false,
         model,
       });
     },
-    [enqueueItem, ttsOptions?.model]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ttsOptions?.model]
   );
 
   const [llmNewLatency, setLlmNewLatency] = useState<{
@@ -370,19 +366,6 @@ export default function Conversation(): JSX.Element {
     isProcessing,
     connectionReady,
   ]);
-
-  /**
-   * magic tts audio queue processing mk2
-   */
-  useEffect(() => {
-    if (playQueue.length > 0) {
-      const playableItems = playQueue.filter((item) => !item.played);
-      const nextPlayableItem = playableItems[playableItems.length - 1];
-      if (nextPlayableItem && !nowPlaying) {
-        setNowPlaying(nextPlayableItem);
-      }
-    }
-  }, [nowPlaying, playQueue, setNowPlaying]);
 
   /**
    * keep deepgram connection alive when mic closed
