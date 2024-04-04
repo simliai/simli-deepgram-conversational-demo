@@ -97,13 +97,13 @@ const sprintf = (template: string, ...args: any[]) => {
   });
 };
 
-const randomArrayValue = (array: any[]) => {
+function randomArrayValue(array: any[]): any {
   const key = Math.floor(Math.random() * array.length);
 
   return array[key];
 };
 
-const contextualGreeting = () => {
+function contextualGreeting(): string {
   const greeting = randomArrayValue(greetings);
 
   return sprintf(greeting.text, ...greeting.strings);
@@ -112,7 +112,7 @@ const contextualGreeting = () => {
 /**
  * @returns {string}
  */
-const contextualHello = () => {
+function contextualHello(): string {
   const hour = moment().hour();
 
   if (hour > 3 && hour <= 12) {

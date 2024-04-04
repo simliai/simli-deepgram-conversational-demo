@@ -132,7 +132,7 @@ export default function Conversation(): JSX.Element {
 
       enqueueItem({
         id: message.id,
-        blob: await res.blob(),
+        blob,
         latency: Number(headers.get("X-DG-Latency")) ?? Date.now() - start,
         networkLatency: Date.now() - start,
         model,
