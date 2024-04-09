@@ -1,6 +1,6 @@
 import { Message } from "ai/react";
 import { Spinner } from "@nextui-org/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { usePlayQueue } from "../context/PlayQueue";
 import { useNowPlaying } from "react-nowplaying";
@@ -18,12 +18,27 @@ const MessageAudio = ({
     player,
     uid: audioUid,
     resume: resumeAudio,
-    pause: pauseAudio,
     play: playAudio,
   } = useNowPlaying();
   const [paused, setPaused] = useState(false);
 
   const found = playQueue.find((item) => item.id === message.id);
+
+  const pause = useCallback(() => {
+    if (player) {
+      player.pause();
+      setPaused(true);
+    }
+  }, [player]);
+
+  const play = useCallback(() => {
+    if (audioUid === message?.id) {
+      setPaused(false);
+      resumeAudio();
+    } else if (found) {
+      playAudio(found.blob);
+    }
+  }, [audioUid, found, message, playAudio, resumeAudio]);
 
   /**
    * Spinner if still waiting for a response
@@ -31,20 +46,6 @@ const MessageAudio = ({
   if (!found) {
     return <Spinner size={`sm`} />;
   }
-
-  const pause = () => {
-    setPaused(true);
-    pauseAudio!();
-  };
-
-  const play = () => {
-    if (audioUid === message?.id) {
-      setPaused(false);
-      resumeAudio();
-    } else {
-      playAudio(found?.blob);
-    }
-  };
 
   /**
    * Pause button
