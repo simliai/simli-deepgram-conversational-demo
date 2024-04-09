@@ -50,7 +50,9 @@ export default function Conversation(): JSX.Element {
     startOnLoad: true,
     stream,
     onSpeechStart: () => {
+      if (!microphoneOpen) return;
       // barge-in
+      
       console.log("barging in! SHH!");
 
       if (!player?.ended) {
@@ -58,6 +60,7 @@ export default function Conversation(): JSX.Element {
       }
     },
     onSpeechEnd: () => {
+      if (!microphoneOpen) return;
       console.log("failsafe fires! pew pew!!");
 
       // -  /**
