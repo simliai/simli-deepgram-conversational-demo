@@ -1,6 +1,6 @@
 import { Message } from "ai/react";
 import { Spinner } from "@nextui-org/react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { usePlayQueue } from "../context/PlayQueue";
 import { useNowPlaying } from "react-nowplaying";

@@ -7,7 +7,6 @@ import { MicrophoneIcon } from "./icons/MicrophoneIcon";
 import { SendIcon } from "./icons/SendIcon";
 import { Settings } from "./Settings";
 import { useMicrophone } from "../context/Microphone";
-import { usePlayQueue } from "../context/PlayQueue";
 import { useNowPlaying } from "react-nowplaying";
 
 export const Controls = ({
@@ -40,11 +39,11 @@ export const Controls = ({
 
   const submitter = useCallback(
     (e: any) => {
-      stopAudio();
       handleSubmit(e);
+      stopAudio();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    // eslint-disable-next-line react-hooks/exhaustive-deps 
+    [stopAudio, handleSubmit]
   );
 
   return (
