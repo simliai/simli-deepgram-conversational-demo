@@ -1,6 +1,6 @@
 import { Message } from "ai/react";
 import { Tooltip } from "@nextui-org/react";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 import { Download } from "./Download";
 import { MicrophoneIcon } from "./icons/MicrophoneIcon";
@@ -21,6 +21,11 @@ export const Controls = ({
   messages: Message[];
 }) => {
   const { startMicrophone, stopMicrophone, microphoneOpen } = useMicrophone();
+
+  useEffect(() => { 
+    startMicrophone();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const microphoneToggle = useCallback(
     async (e: Event) => {
