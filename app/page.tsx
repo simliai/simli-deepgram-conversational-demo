@@ -1,20 +1,15 @@
 "use client";
 
-import Conversation from "./components/Conversation";
 import Image from "next/image";
 import GitHubButton from "react-github-btn";
 
-import * as FullStory from "@fullstory/browser";
-import {
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+export const runtime = "edge";
+import { init } from "@fullstory/browser";
+import { useEffect } from "react";
 import { XIcon } from "./components/icons/XIcon";
 import { FacebookIcon } from "./components/icons/FacebookIcon";
 import { LinkedInIcon } from "./components/icons/LinkedInIcon";
+import Conversation from "./components/Conversation";
 
 export default function Home() {
   // const worker = useRef<Worker>();
@@ -22,7 +17,7 @@ export default function Home() {
   // const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    FullStory.init({ orgId: "5HWAN" });
+    init({ orgId: "5HWAN" });
   }, []);
 
   // // We use the `useEffect` hook to set up the worker as soon as the `App` component is mounted.
@@ -149,6 +144,7 @@ export default function Home() {
 
                 return e.preventDefault();
               }}
+              aria-label="share on twitter"
               target="_blank"
             >
               <XIcon className="mb-1" />
@@ -164,6 +160,7 @@ export default function Home() {
 
                 return e.preventDefault();
               }}
+              aria-label="share on Linkedin"
             >
               <LinkedInIcon className="mb-1" />
             </a>
@@ -179,6 +176,7 @@ export default function Home() {
                 return e.preventDefault();
               }}
               target="_blank"
+              aria-label="share on Facebook"
             >
               <FacebookIcon className="mb-1" />
             </a>
