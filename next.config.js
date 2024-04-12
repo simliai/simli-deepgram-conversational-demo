@@ -28,20 +28,43 @@ const nextConfig = {
 
     config.plugins.push(
       new CopyPlugin({
-        patterns: wasmPaths.map((p) => ({ from: p, to: "static/chunks/app" })),
+        patterns: wasmPaths.map((p) => ({
+          from: p,
+          to: "static/chunks/app",
+        })),
       })
     );
 
     // vercel
     config.plugins.push(
       new CopyPlugin({
-        patterns: wasmPaths.map((p) => ({ from: p, to: "static/chunks" })),
+        patterns: wasmPaths.map((p) => ({
+          from: p,
+          to: "static/chunks",
+        })),
       })
     );
 
     return config;
   },
   reactStrictMode: false,
+  async headers() {
+    return [
+      {
+        source: "/_next/(.*)",
+        headers: [
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "require-corp",
+          },
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "require-corp",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;

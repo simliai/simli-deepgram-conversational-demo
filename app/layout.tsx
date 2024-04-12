@@ -8,7 +8,7 @@ import Script from "next/script";
 import { DeepgramContextProvider } from "./context/Deepgram";
 import { MessageMetadataContextProvider } from "./context/MessageMetadata";
 import { MicrophoneContextProvider } from "./context/Microphone";
-import { PlayQueueContextProvider } from "./context/PlayQueue";
+import { AudioStoreContextProvider } from "./context/AudioStore";
 import { ToastContextProvider } from "./context/Toast";
 
 import "./globals.css";
@@ -53,13 +53,13 @@ export default function RootLayout({
       >
         <ToastContextProvider>
           <MicrophoneContextProvider>
-            <PlayQueueContextProvider>
+            <AudioStoreContextProvider>
               <NowPlayingContextProvider>
                 <MessageMetadataContextProvider>
                   <DeepgramContextProvider>{children}</DeepgramContextProvider>
                 </MessageMetadataContextProvider>
               </NowPlayingContextProvider>
-            </PlayQueueContextProvider>
+            </AudioStoreContextProvider>
           </MicrophoneContextProvider>
         </ToastContextProvider>
         <GoogleTagManager gtmId="GTM-5R73N627" />

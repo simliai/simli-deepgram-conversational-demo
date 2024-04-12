@@ -1,44 +1,49 @@
 import { Message } from "ai/react";
 import { Spinner } from "@nextui-org/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { usePlayQueue } from "../context/PlayQueue";
+import { useAudioStore } from "../context/AudioStore";
 import { useNowPlaying } from "react-nowplaying";
 
 const MessageAudio = ({
-  message,
+  message: { id },
   className = "",
   ...rest
 }: {
   message: Message;
   className?: string;
 }) => {
-  const { playQueue } = usePlayQueue();
-  const {
-    player,
-    uid: audioUid,
-    resume: resumeAudio,
-    play: playAudio,
-  } = useNowPlaying();
-  const [paused, setPaused] = useState(false);
+  const { audioStore } = useAudioStore();
+  const { player, uid, resume: resumeAudio, play: playAudio } = useNowPlaying();
+  const [playing, setPlaying] = useState(false);
 
-  const found = playQueue.find((item) => item.id === message.id);
+  const found = useMemo(() => {
+    return audioStore.find((item) => item.id === id);
+  }, [audioStore, id]);
+
+  useEffect(() => {
+    setPlaying(uid === id);
+  }, [uid, id]);
 
   const pause = useCallback(() => {
-    if (player) {
-      player.pause();
-      setPaused(true);
-    }
+    if (!player) return;
+
+    player.pause();
+    setPlaying(false);
   }, [player]);
 
   const play = useCallback(() => {
-    if (audioUid === message?.id) {
-      setPaused(false);
+    if (!player || !found) return;
+
+    if (uid === found.id) {
       resumeAudio();
     } else if (found) {
-      playAudio(found.blob);
+      playAudio(found.blob, "audio/mp3", id);
     }
-  }, [audioUid, found, message, playAudio, resumeAudio]);
+
+    setPlaying(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uid, found, id]);
 
   /**
    * Spinner if still waiting for a response
@@ -52,9 +57,9 @@ const MessageAudio = ({
    *
    * audio === this message
    * AND
-   * paused === false
+   * playing === true
    */
-  if (audioUid === message?.id && !paused) {
+  if (playing) {
     return (
       <a href="#" onClick={() => pause!()}>
         <svg
@@ -80,7 +85,7 @@ const MessageAudio = ({
    * OR
    * paused === true
    */
-  if (audioUid !== message?.id || paused) {
+  if (!playing) {
     return (
       <a href="#" onClick={() => play()}>
         <svg

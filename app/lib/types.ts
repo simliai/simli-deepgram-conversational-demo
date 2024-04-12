@@ -6,11 +6,3 @@ export interface MessageMetadata extends Partial<Message> {
   end?: number;
   ttsModel?: string;
 }
-
-export interface AudioPacket {
-  id: string;
-  blob: Blob;
-  latency: number;
-  networkLatency: number;
-  model: string;
-}

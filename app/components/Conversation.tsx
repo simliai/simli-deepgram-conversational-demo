@@ -14,7 +14,11 @@ import { useQueue } from "@uidotdev/usehooks";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 
 import { ChatBubble } from "./ChatBubble";
-import { contextualGreeting, utteranceText } from "../lib/helpers";
+import {
+  contextualGreeting,
+  generateRandomString,
+  utteranceText,
+} from "../lib/helpers";
 import { Controls } from "./Controls";
 import { InitialLoad } from "./InitialLoad";
 import { MessageMetadata } from "../lib/types";
@@ -23,7 +27,7 @@ import { systemContent } from "../lib/constants";
 import { useDeepgram } from "../context/Deepgram";
 import { useMessageData } from "../context/MessageMetadata";
 import { useMicrophone } from "../context/Microphone";
-import { usePlayQueue } from "../context/PlayQueue";
+import { useAudioStore } from "../context/AudioStore";
 
 /**
  * Conversation element that contains the conversational AI app.
@@ -34,7 +38,7 @@ export default function Conversation(): JSX.Element {
    * Custom context providers
    */
   const { ttsOptions, connection, connectionReady } = useDeepgram();
-  const { enqueueItem } = usePlayQueue();
+  const { addAudio } = useAudioStore();
   const { player, stop: stopAudio, play: startAudio } = useNowPlaying();
   const { addMessageData } = useMessageData();
   const {
@@ -46,52 +50,6 @@ export default function Conversation(): JSX.Element {
     stream,
   } = useMicrophone();
 
-  useMicVAD({
-    startOnLoad: true,
-    stream,
-    onSpeechStart: () => {
-      if (!microphoneOpen) return;
-      // barge-in
-      
-      console.log("barging in! SHH!");
-
-      if (!player?.ended) {
-        stopAudio();
-      }
-    },
-    onSpeechEnd: () => {
-      if (!microphoneOpen) return;
-      console.log("failsafe fires! pew pew!!");
-
-      // -  /**
-      // -   * incomplete speech final failsafe
-      // -   */
-      // -  useEffect(() => {
-      // -    if (!lastUtterance || !currentUtterance) return;
-      // -
-      // -    const interval = setInterval(() => {
-      // -      const timeLived = Date.now() - lastUtterance;
-      // -
-      // -      if (currentUtterance !== "" && timeLived > 1500) {
-      // -        console.log("failsafe fires! pew pew!!");
-      // -
-      // -        append({
-      // -          role: "user",
-      // -          content: currentUtterance,
-      // -        });
-      // -        clearTranscriptParts();
-      // -        setCurrentUtterance(undefined);
-      // -      }
-      // -    }, 100);
-      // -
-      // -    return () => {
-      // -      clearInterval(interval);
-      // -    };
-      // -    // eslint-disable-next-line react-hooks/exhaustive-deps
-      // -  }, [lastUtterance, currentUtterance]);
-    },
-  });
-
   /**
    * Queues
    */
@@ -99,7 +57,6 @@ export default function Conversation(): JSX.Element {
     add: addTranscriptPart,
     queue: transcriptParts,
     clear: clearTranscriptParts,
-    last: lastTranscriptPart,
   } = useQueue<{ is_final: boolean; speech_final: boolean; text: string }>([]);
 
   /**
@@ -131,14 +88,14 @@ export default function Conversation(): JSX.Element {
 
       const blob = await res.blob();
 
-      startAudio(blob, "audio/mp3", message.id);
-
-      enqueueItem({
-        id: message.id,
-        blob,
-        latency: Number(headers.get("X-DG-Latency")) ?? Date.now() - start,
-        networkLatency: Date.now() - start,
-        model,
+      startAudio(blob, "audio/mp3", message.id).then(() => {
+        addAudio({
+          id: message.id,
+          blob,
+          latency: Number(headers.get("X-DG-Latency")) ?? Date.now() - start,
+          networkLatency: Date.now() - start,
+          model,
+        });
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -166,13 +123,21 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
-  const greeting = useMemo(
-    () =>
-      ({
-        id: "welcome",
-        role: "assistant",
-        content: contextualGreeting(),
-      }) as Message,
+  const systemMessage: Message = useMemo(
+    () => ({
+      id: generateRandomString(7),
+      role: "system",
+      content: systemContent,
+    }),
+    []
+  );
+
+  const greetingMessage: Message = useMemo(
+    () => ({
+      id: generateRandomString(7),
+      role: "assistant",
+      content: contextualGreeting(),
+    }),
     []
   );
 
@@ -189,15 +154,68 @@ export default function Conversation(): JSX.Element {
   } = useChat({
     id: "aura",
     api: "/api/brain",
-    initialMessages: [
-      {
-        role: "system",
-        content: systemContent,
-      } as Message,
-      greeting,
-    ],
+    initialMessages: [systemMessage, greetingMessage],
     onFinish,
     onResponse,
+  });
+
+  const [currentUtterance, setCurrentUtterance] = useState<string>();
+  const [failsafeTimeout, setFailsafeTimeout] = useState<NodeJS.Timeout>();
+
+  const onSpeechEnd = useCallback(() => {
+    /**
+     * We have the audio data context available in VAD
+     * even before we start sending it to deepgram.
+     * So ignore any VAD events before we "open" the mic.
+     */
+    if (!microphoneOpen) return;
+
+    setFailsafeTimeout(
+      setTimeout(() => {
+        if (currentUtterance) {
+          console.log("failsafe fires! pew pew!!");
+          append({
+            role: "user",
+            content: currentUtterance,
+          });
+          clearTranscriptParts();
+          setCurrentUtterance(undefined);
+        }
+      }, 1500)
+    );
+
+    return () => {
+      clearTimeout(failsafeTimeout);
+    };
+  }, [
+    microphoneOpen,
+    currentUtterance,
+    append,
+    clearTranscriptParts,
+    failsafeTimeout,
+  ]);
+
+  const onSpeechStart = () => {
+    /**
+     * We have the audio data context available in VAD
+     * even before we start sending it to deepgram.
+     * So ignore any VAD events before we "open" the mic.
+     */
+    if (!microphoneOpen) return;
+
+    if (!player?.ended) {
+      stopAudio();
+      console.log("barging in! SHH!");
+    }
+  };
+
+  useMicVAD({
+    startOnLoad: true,
+    stream,
+    onSpeechStart,
+    onSpeechEnd,
+    positiveSpeechThreshold: 0.6,
+    negativeSpeechThreshold: 0.6 - 0.15,
   });
 
   useEffect(() => {
@@ -225,8 +243,8 @@ export default function Conversation(): JSX.Element {
    * Contextual functions
    */
   const requestWelcomeAudio = useCallback(async () => {
-    requestTtsAudio(greeting);
-  }, [greeting, requestTtsAudio]);
+    requestTtsAudio(greetingMessage);
+  }, [greetingMessage, requestTtsAudio]);
 
   const startConversation = useCallback(() => {
     if (!initialLoad) return;
@@ -235,7 +253,7 @@ export default function Conversation(): JSX.Element {
 
     // add a stub message data with no latency
     const welcomeMetadata: MessageMetadata = {
-      ...greeting,
+      ...greetingMessage,
       ttsModel: ttsOptions?.model,
     };
 
@@ -245,7 +263,7 @@ export default function Conversation(): JSX.Element {
     requestWelcomeAudio();
   }, [
     addMessageData,
-    greeting,
+    greetingMessage,
     initialLoad,
     requestWelcomeAudio,
     ttsOptions?.model,
@@ -285,8 +303,6 @@ export default function Conversation(): JSX.Element {
     };
   }, [addTranscriptPart, connection]);
 
-  const [currentUtterance, setCurrentUtterance] = useState<string>();
-
   const getCurrentUtterance = useCallback(() => {
     return transcriptParts.filter(({ is_final, speech_final }, i, arr) => {
       return is_final || speech_final || (!is_final && i === arr.length - 1);
@@ -325,6 +341,7 @@ export default function Conversation(): JSX.Element {
      * if the last part of the utterance, empty or not, is speech_final, send to the LLM.
      */
     if (last && last.speech_final) {
+      clearTimeout(failsafeTimeout);
       append({
         role: "user",
         content,
@@ -332,7 +349,7 @@ export default function Conversation(): JSX.Element {
       clearTranscriptParts();
       setCurrentUtterance(undefined);
     }
-  }, [getCurrentUtterance, clearTranscriptParts, append]);
+  }, [getCurrentUtterance, clearTranscriptParts, append, failsafeTimeout]);
 
   /**
    * magic microphone audio queue processing
@@ -417,7 +434,10 @@ export default function Conversation(): JSX.Element {
                 >
                   <div className="grid grid-cols-12 overflow-x-auto gap-y-2">
                     {initialLoad ? (
-                      <InitialLoad fn={startConversation} connecting={!connection} />
+                      <InitialLoad
+                        fn={startConversation}
+                        connecting={!connection}
+                      />
                     ) : (
                       <>
                         {chatMessages.length > 0 &&

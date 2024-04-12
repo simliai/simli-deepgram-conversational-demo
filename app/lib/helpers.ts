@@ -1,6 +1,5 @@
 import { LiveTranscriptionEvent } from "@deepgram/sdk";
 import { Message } from "ai/react";
-import { CreateMessage } from "ai";
 import moment from "moment";
 import { greetings } from "./constants";
 
@@ -30,55 +29,6 @@ const getUserMessages = (messages: Message[]) => {
  */
 const getConversationMessages = (messages: Message[]) => {
   return messages.filter((message) => message.role !== "system");
-};
-
-const blankUserMessage: CreateMessage = {
-  role: "user",
-  content: "",
-};
-
-/**
- * Splits a string into chunks based on specified delimiters, ensuring each chunk meets a minimum length.
- * @see https://chat.openai.com/share/b5f3cd47-d995-4a19-af3a-d37f78f7a28c
- * @param {string}   string      The string to split into chunks.
- * @param {string[]} delimiters  An array of delimiters based on which the string should be chunked.
- * @param {number}   minLength   The minimum length required for each chunk.
- * @returns {string[]}           An array of chunks that meet the minimum length requirement.
- */
-const chunkStringWithMinLength = (
-  string: string,
-  delimiters: string[],
-  minLength: number
-): string[] => {
-  let chunks = [];
-  let currentChunk = "";
-
-  for (let i = 0; i < string.length; i++) {
-    let foundDelimiter = false;
-
-    for (let j = 0; j < delimiters.length; j++) {
-      if (string.substr(i, delimiters[j].length) === delimiters[j]) {
-        currentChunk += delimiters[j];
-        if (currentChunk.length >= minLength) {
-          chunks.push(currentChunk);
-          currentChunk = "";
-        }
-        i += delimiters[j].length - 1;
-        foundDelimiter = true;
-        break;
-      }
-    }
-
-    if (!foundDelimiter) {
-      currentChunk += string[i];
-    }
-  }
-
-  if (currentChunk.length >= minLength) {
-    chunks.push(currentChunk);
-  }
-
-  return chunks.filter((chunk) => chunk.trim() !== "");
 };
 
 const sprintf = (template: string, ...args: any[]) => {
@@ -128,12 +78,31 @@ function contextualHello(): string {
   }
 };
 
+/**
+ * Generate random string of alphanumerical characters.
+ * 
+ * @param {number} length this is the length of the string to return
+ * @returns {string}
+ */
+function generateRandomString(length: number): string {
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    let randomChar = characters.charAt(Math.floor(Math.random() * characters.length));
+    result += randomChar;
+  }
+
+  return result;
+
+  return 'test';
+}
+
 export {
+  generateRandomString,
   contextualGreeting,
   contextualHello,
-  chunkStringWithMinLength,
   getUserMessages,
   getConversationMessages,
-  utteranceText,
-  blankUserMessage,
+  utteranceText
 };
