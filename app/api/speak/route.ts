@@ -31,21 +31,21 @@ export async function POST(req: NextRequest) {
     );
 
   return await fetch(
-    `${process.env.DEEPGRAM_STT_DOMAIN}/v1/speak?model=${model}`,
+    `${process.env.DEEPGRAM_STT_DOMAIN}?text=${text}&speaker=42`,
     {
       method: "POST",
-      body: JSON.stringify({ text }),
+      body: JSON.stringify({  }),
       headers: {
-        "Content-Type": `application/json`,
-        Authorization: `token ${process.env.DEEPGRAM_API_KEY || ""}`,
-        "X-DG-Referrer": url,
+        // "Content-Type": `application/json`,
+        // Authorization: `token ${process.env.DEEPGRAM_API_KEY || ""}`,
+        // "X-DG-Referrer": url,
       },
     }
   )
     .then(async (response) => {
       const headers = new Headers();
       headers.set("X-DG-Latency", `${Date.now() - start}`);
-      headers.set("Content-Type", "audio/mp3");
+      headers.set("Content-Type", "audio/wav");
 
       if (!response?.body) {
         return new NextResponse("Unable to get response from API.", {

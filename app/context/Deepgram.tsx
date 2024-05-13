@@ -48,6 +48,7 @@ const defaultSttsOptions = {
   endpointing: 550,
   utterance_end_ms: 1500,
   filler_words: true,
+  language: 'ja'
 }
 
 /**

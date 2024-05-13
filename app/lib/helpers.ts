@@ -66,15 +66,15 @@ function contextualHello(): string {
   const hour = moment().hour();
 
   if (hour > 3 && hour <= 12) {
-    return "Good morning";
+    return "";
   } else if (hour > 12 && hour <= 15) {
-    return "Good afternoon";
+    return "";
   } else if (hour > 15 && hour <= 20) {
-    return "Good evening";
+    return "";
   } else if (hour > 20 || hour <= 3) {
-    return "You're up late";
+    return "";
   } else {
-    return "Hello";
+    return "";
   }
 };
 
