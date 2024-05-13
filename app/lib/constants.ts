@@ -7,7 +7,7 @@ export const systemContent = `
 
 export const greetings = [
   {
-    text: "%s. - こんにちは、今日はどのようなお手伝いをさせていただけますか?",
+    text: "こんにちは。どうすればお手伝いできますか?",
     strings: [contextualHello()],
   }
 ];
