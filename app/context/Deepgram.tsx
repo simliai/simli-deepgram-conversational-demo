@@ -162,6 +162,61 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
+  // Old Models
+  "15_old": {
+    name: "Old Voice 15 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "23_old": {
+    name: "Old Voice 23 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "78_old": {
+    name: "Old Voice 78 - Female",
+    avatar: "/aura-luna-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "116_old": {
+    name: "Old Voice 116 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "93_old": {
+    name: "Old Voice 93 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "100_old": {
+    name: "Old Voice 100 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "104_old": {
+    name: "Old Voice 104 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "192_old": {
+    name: "Old Voice 192 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "254_old": {
+    name: "Old Voice 254 - Male",
+    avatar: "/aura-zeus-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
 };
 
 const voiceMap = (model: string) => {
