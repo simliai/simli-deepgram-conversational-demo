@@ -39,7 +39,7 @@ export default function Conversation(): JSX.Element {
    */
   const { ttsOptions, connection, connectionReady } = useDeepgram();
   const { addAudio } = useAudioStore();
-  const { player, stop: stopAudio, play: startAudio } = useNowPlaying();
+  const { player, stop: stopAudio, play: startAudio, onAudioEnded } = useNowPlaying();
   const { addMessageData } = useMessageData();
   const {
     microphoneOpen,
@@ -69,6 +69,7 @@ export default function Conversation(): JSX.Element {
    */
   const [initialLoad, setInitialLoad] = useState(true);
   const [isProcessing, setProcessing] = useState(false);
+  const [isPlaying, setPlaying] = useState(true);
 
   /**
    * Request audio from API
@@ -87,8 +88,10 @@ export default function Conversation(): JSX.Element {
       const headers = res.headers;
 
       const blob = await res.blob();
-
+      
       startAudio(blob, "audio/mp3", message.id).then(() => {
+        setPlaying(true);
+        console.log('YYY setPlaying(true);');
         addAudio({
           id: message.id,
           blob,
@@ -212,14 +215,24 @@ export default function Conversation(): JSX.Element {
     }
   };
 
-  useMicVAD({
-    startOnLoad: true,
-    stream,
-    onSpeechStart,
-    onSpeechEnd,
-    positiveSpeechThreshold: 0.6,
-    negativeSpeechThreshold: 0.6 - 0.15,
-  });
+  // useMicVAD({
+  //   startOnLoad: true,
+  //   stream,
+  //   onSpeechStart,
+  //   onSpeechEnd,
+  //   positiveSpeechThreshold: 0.6,
+  //   negativeSpeechThreshold: 0.6 - 0.15,
+  // });
+
+  useEffect(() => {
+    const handleAudioEnded = () => {
+      console.log('Audio has ended');
+      setPlaying(false)
+    };
+
+    onAudioEnded(handleAudioEnded);
+
+  }, [onAudioEnded]);
 
   useEffect(() => {
     if (llmLoading) return;
@@ -374,7 +387,7 @@ export default function Conversation(): JSX.Element {
    */
   useEffect(() => {
     const processQueue = async () => {
-      if (microphoneQueueSize > 0 && !isProcessing) {
+      if (microphoneQueueSize > 0 && !isProcessing && !isPlaying) {
         setProcessing(true);
 
         if (connectionReady) {
@@ -391,6 +404,8 @@ export default function Conversation(): JSX.Element {
           clearTimeout(waiting);
           setProcessing(false);
         }, 200);
+      } else if(isPlaying){
+        console.log('Skipping blob')
       }
     };
 
@@ -402,6 +417,7 @@ export default function Conversation(): JSX.Element {
     firstBlob,
     microphoneQueueSize,
     isProcessing,
+    isPlaying,
     connectionReady,
   ]);
 
