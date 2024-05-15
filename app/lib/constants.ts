@@ -1,8 +1,6 @@
 import { contextualHello } from "./helpers";
 
-export const systemContent = `
-あなたは日本のコールセンターで役に立つアシスタントで、ネイティブスピーカーの会話スタイルで日本語を話します。
-`;
+export const systemContent = `あなたは日本のコールセンターで役に立つアシスタントで、ネイティブスピーカーの会話スタイルで日本語を話します。`;
 
 export const greetings = [
   {
