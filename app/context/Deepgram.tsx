@@ -34,7 +34,7 @@ interface DeepgramContextInterface {
 
 const DeepgramContext = createContext({} as DeepgramContext);
 
-const DEFAULT_TTS_MODEL = 'aura-asteria-en';
+const DEFAULT_TTS_MODEL = '30';
 const DEFAULT_STT_MODEL = 'nova-2';
 
 const defaultTtsOptions = {
@@ -62,77 +62,105 @@ const voices: {
     accent: string;
   };
 } = {
+  /*
+15 - Male
+23 - Male
+28 (Aya Ishiharaguchi) - Female
+30 (Sakura Maria) - Female
+31 (Naoko Yamaguchi) - Female
+41 (Hoshun Murakami) - Male
+82 - Female
+95 - Male
+106 - Female
+109 - Female
+122 - Male
+195 - Female
+222 (Devante Teerink) - Male
+264 - Female
+  */
   [DEFAULT_TTS_MODEL]: {
-    name: "Asteria",
+    name: "Voice 30 - Female *",
     avatar: "/aura-asteria-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-luna-en": {
-    name: "Luna",
-    avatar: "/aura-luna-en.svg",
-    language: "English",
-    accent: "US",
-  },
-  "aura-stella-en": {
-    name: "Stella",
-    avatar: "/aura-stella-en.svg",
-    language: "English",
-    accent: "US",
-  },
-  "aura-athena-en": {
-    name: "Athena",
-    avatar: "/aura-athena-en.svg",
-    language: "English",
-    accent: "UK",
-  },
-  "aura-hera-en": {
-    name: "Hera",
-    avatar: "/aura-hera-en.svg",
-    language: "English",
-    accent: "US",
-  },
-  "aura-orion-en": {
-    name: "Orion",
+  "15": {
+    name: "Voice 15 - Male",
     avatar: "/aura-orion-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-arcas-en": {
-    name: "Arcas",
+  "82": {
+    name: "Voice 82 - Female",
+    avatar: "/aura-luna-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "28": {
+    name: "Voice 28 - Female *",
+    avatar: "/aura-stella-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "31": {
+    name: "Voice 31 - Female *",
+    avatar: "/aura-athena-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "106": {
+    name: "Voice 106 - Female",
+    avatar: "/aura-hera-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "23": {
+    name: "Voice 23 - Male",
+    avatar: "/aura-orion-en.svg",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "95": {
+    name: "Voice 95 - Male",
     avatar: "/aura-arcas-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-perseus-en": {
-    name: "Perseus",
+  "41": {
+    name: "Voice 41 - Male *",
     avatar: "/aura-perseus-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-angus-en": {
-    name: "Angus",
-    avatar: "/aura-angus-en.svg",
-    language: "English",
-    accent: "Ireland",
+  "109": {
+    name: "Voice 109 - Female",
+    avatar: "/aura-luna-en.svg",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-orpheus-en": {
-    name: "Orpheus",
+  "122": {
+    name: "Voice 122 - Male",
     avatar: "/aura-orpheus-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-helios-en": {
-    name: "Helios",
-    avatar: "/aura-helios-en.svg",
-    language: "English",
-    accent: "UK",
+  "195": {
+    name: "Voice 195 - Female",
+    avatar: "/aura-luna-en.svg",
+    language: "Japanese",
+    accent: "JA",
   },
-  "aura-zeus-en": {
-    name: "Zeus",
+  "222": {
+    name: "Voice 222 - Male *",
     avatar: "/aura-zeus-en.svg",
-    language: "English",
-    accent: "US",
+    language: "Japanese",
+    accent: "JA",
+  },
+  "264": {
+    name: "Voice 264 - Female",
+    avatar: "/aura-luna-en.svg",
+    language: "Japanese",
+    accent: "JA",
   },
 };
 
