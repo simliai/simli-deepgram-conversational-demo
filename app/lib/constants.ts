@@ -4,7 +4,7 @@ export const systemContent = `あなたは日本のコールセンターで役�
 
 export const greetings = [
   {
-    text: "こんにちは。どうすればお手伝いできますか?",
+    text: "こんにちは。本日はどういたしましたか？",
     strings: [contextualHello()],
   }
 ];
