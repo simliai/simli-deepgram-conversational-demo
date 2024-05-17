@@ -1,6 +1,6 @@
 import { contextualHello } from "./helpers";
 
-export const systemContent = `あなたは日本のコールセンターで役に立つアシスタントで、ネイティブスピーカーの会話スタイルで日本語のみで話します。返答は常に４文以内に制限してください。`;
+export const systemContent = `あなたは日本のコールセンターで役に立つアシスタントで、ネイティブスピーカーの会話スタイルで日本語のみで話します。返答は通常、２〜４文で行い、一文だけの返答は避けてください。 `;
 
 export const greetings = [
   {
