@@ -23,17 +23,20 @@ import { Controls } from "./Controls";
 import { InitialLoad } from "./InitialLoad";
 import { MessageMetadata } from "../lib/types";
 import { RightBubble } from "./RightBubble";
-import { systemContent } from "../lib/constants";
+import { systemContent, systemContent2 } from "../lib/constants";
 import { useDeepgram } from "../context/Deepgram";
 import { useMessageData } from "../context/MessageMetadata";
 import { useMicrophone } from "../context/Microphone";
 import { useAudioStore } from "../context/AudioStore";
+import { useSearchParams } from "next/navigation";
 
 /**
  * Conversation element that contains the conversational AI app.
  * @returns {JSX.Element}
  */
 export default function Conversation(): JSX.Element {
+  const searchParams = useSearchParams();
+
   /**
    * Custom context providers
    */
@@ -123,11 +126,19 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
+  let systemPrompt = '';
+  let prompt = searchParams.get('prompt');
+  if(!prompt || prompt == '1'){
+    systemPrompt = systemContent;
+  } else if(prompt == '2'){
+    systemPrompt = systemContent2;
+  } 
+
   const systemMessage: Message = useMemo(
     () => ({
       id: generateRandomString(7),
       role: "system",
-      content: systemContent,
+      content: systemPrompt,
     }),
     []
   );
