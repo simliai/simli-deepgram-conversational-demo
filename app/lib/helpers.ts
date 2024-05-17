@@ -1,7 +1,7 @@
 import { LiveTranscriptionEvent } from "@deepgram/sdk";
 import { Message } from "ai/react";
 import moment from "moment";
-import { greetings } from "./constants";
+// import { greetings } from "./constants";
 
 /**
  * get the sentence from a LiveTranscriptionEvent
@@ -53,11 +53,11 @@ function randomArrayValue(array: any[]): any {
   return array[key];
 };
 
-function contextualGreeting(): string {
-  const greeting = randomArrayValue(greetings);
+// function contextualGreeting(): string {
+//   const greeting = randomArrayValue(greetings);
 
-  return sprintf(greeting.text, ...greeting.strings);
-};
+//   return sprintf(greeting.text, ...greeting.strings);
+// };
 
 /**
  * @returns {string}
@@ -100,7 +100,7 @@ function generateRandomString(length: number): string {
 
 export {
   generateRandomString,
-  contextualGreeting,
+  // contextualGreeting,
   contextualHello,
   getUserMessages,
   getConversationMessages,

@@ -15,7 +15,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 
 import { ChatBubble } from "./ChatBubble";
 import {
-  contextualGreeting,
+  // contextualGreeting,
   generateRandomString,
   utteranceText,
 } from "../lib/helpers";
@@ -23,7 +23,7 @@ import { Controls } from "./Controls";
 import { InitialLoad } from "./InitialLoad";
 import { MessageMetadata } from "../lib/types";
 import { RightBubble } from "./RightBubble";
-import { systemContent, systemContent2 } from "../lib/constants";
+import { greeting, greeting2, systemContent, systemContent2 } from "../lib/constants";
 import { useDeepgram } from "../context/Deepgram";
 import { useMessageData } from "../context/MessageMetadata";
 import { useMicrophone } from "../context/Microphone";
@@ -127,11 +127,14 @@ export default function Conversation(): JSX.Element {
   }, []);
 
   let systemPrompt = '';
+  let greetingChoice = '';
   let prompt = searchParams.get('prompt');
   if(!prompt || prompt == '1'){
     systemPrompt = systemContent;
+    greetingChoice = greeting;
   } else if(prompt == '2'){
     systemPrompt = systemContent2;
+    greetingChoice = greeting2;
   } 
 
   const systemMessage: Message = useMemo(
@@ -147,7 +150,7 @@ export default function Conversation(): JSX.Element {
     () => ({
       id: generateRandomString(7),
       role: "assistant",
-      content: contextualGreeting(),
+      content: greetingChoice,
     }),
     []
   );
