@@ -73,13 +73,22 @@ export default function Conversation(): JSX.Element {
   const [initialLoad, setInitialLoad] = useState(true);
   const [isProcessing, setProcessing] = useState(false);
 
+  let systemPrompt = '';
+  let greetingChoice = '';
+  let prompt = searchParams.get('prompt');
+
   /**
    * Request audio from API
    */
   const requestTtsAudio = useCallback(
     async (message: Message) => {
       const start = Date.now();
-      const model = ttsOptions?.model ?? "aura-asteria-en";
+      
+      let model = ttsOptions?.model ?? "28";
+
+      if(prompt == '2'){
+        model = "222";
+      }
 
       const res = await fetch(`/api/speak?model=${model}`, {
         cache: "no-store",
@@ -126,9 +135,6 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
-  let systemPrompt = '';
-  let greetingChoice = '';
-  let prompt = searchParams.get('prompt');
   if(!prompt || prompt == '1'){
     systemPrompt = systemContent;
     greetingChoice = greeting;
