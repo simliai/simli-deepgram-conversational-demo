@@ -87,7 +87,7 @@ export default function Conversation(): JSX.Element {
       let model = ttsOptions?.model ?? "28";
 
       if(prompt == '2'){
-        model = "222";
+        model = "122";
       }else if(prompt == '3'){
         model = "31";
       }
