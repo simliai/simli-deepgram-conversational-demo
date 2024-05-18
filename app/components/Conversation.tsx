@@ -88,6 +88,8 @@ export default function Conversation(): JSX.Element {
 
       if(prompt == '2'){
         model = "222";
+      }else if(prompt == '3'){
+        model = "31";
       }
 
       const res = await fetch(`/api/speak?model=${model}`, {
@@ -135,13 +137,13 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
-  if(!prompt || prompt == '1'){
-    systemPrompt = systemContent;
-    greetingChoice = greeting;
-  } else if(prompt == '2'){
+  if(prompt == '2'){
     systemPrompt = systemContent2;
     greetingChoice = greeting2;
-  } 
+  } else {
+    systemPrompt = systemContent;
+    greetingChoice = greeting;
+  }
 
   const systemMessage: Message = useMemo(
     () => ({
