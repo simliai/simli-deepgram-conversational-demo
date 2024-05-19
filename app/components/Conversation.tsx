@@ -136,7 +136,7 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
-  if(prompt != '2'){
+  if(prompt == '2'){
     systemPrompt = systemContent2;
     greetingChoice = greeting2;
   } else {
