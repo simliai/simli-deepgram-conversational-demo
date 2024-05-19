@@ -76,6 +76,7 @@ export default function Conversation(): JSX.Element {
   let systemPrompt = '';
   let greetingChoice = '';
   let prompt = searchParams.get('prompt');
+  let voice = searchParams.get('voice');
 
   /**
    * Request audio from API
@@ -86,14 +87,8 @@ export default function Conversation(): JSX.Element {
       
       let model = ttsOptions?.model ?? "28";
 
-      if(prompt == '3'){
-        model = "31";
-      } else if(prompt == '4'){
-        model = "254_old";
-      } else if(prompt == '5'){
-        model = "122";
-      } else if(prompt && prompt != '' && prompt != '1' && prompt != '2'){
-        model = prompt;
+      if(voice && voice != ''){
+        model = voice;
       }
 
       const res = await fetch(`/api/speak?model=${model}`, {
@@ -141,7 +136,7 @@ export default function Conversation(): JSX.Element {
     })();
   }, []);
 
-  if(prompt && prompt != '' && prompt != '1' && prompt != '3' && prompt != '4'){
+  if(prompt != '2'){
     systemPrompt = systemContent2;
     greetingChoice = greeting2;
   } else {
