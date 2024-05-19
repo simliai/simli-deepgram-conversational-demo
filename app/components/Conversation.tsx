@@ -90,6 +90,9 @@ export default function Conversation(): JSX.Element {
       if(voice && voice != ''){
         model = voice;
       }
+      if(prompt == '2'){
+        model = '122';
+      }
 
       const res = await fetch(`/api/speak?model=${model}`, {
         cache: "no-store",
