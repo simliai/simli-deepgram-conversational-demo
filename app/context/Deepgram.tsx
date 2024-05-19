@@ -90,15 +90,9 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  "82": {
-    name: "Voice 82 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "30": {
-    name: "Voice 30 - Female *",
-    avatar: "/aura-stella-en.svg",
+  "23": {
+    name: "Voice 23 - Male",
+    avatar: "/aura-orion-en.svg",
     language: "Japanese",
     accent: "JA",
   },
@@ -108,32 +102,8 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  "106": {
-    name: "Voice 106 - Female",
-    avatar: "/aura-hera-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "23": {
-    name: "Voice 23 - Male",
-    avatar: "/aura-orion-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "95": {
-    name: "Voice 95 - Male",
-    avatar: "/aura-arcas-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "41": {
-    name: "Voice 41 - Male *",
-    avatar: "/aura-perseus-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "109": {
-    name: "Voice 109 - Female",
+  "82": {
+    name: "Voice 82 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
     accent: "JA",
@@ -141,49 +111,6 @@ const voices: {
   "122": {
     name: "Voice 122 - Male",
     avatar: "/aura-orpheus-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "195": {
-    name: "Voice 195 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "222": {
-    name: "Voice 222 - Male *",
-    avatar: "/aura-zeus-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "264": {
-    name: "Voice 264 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  // Old Models
-  "15_old": {
-    name: "Old Voice 15 - Male",
-    avatar: "/aura-zeus-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "23_old": {
-    name: "Old Voice 23 - Male",
-    avatar: "/aura-zeus-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "78_old": {
-    name: "Old Voice 78 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "116_old": {
-    name: "Old Voice 116 - Male",
-    avatar: "/aura-zeus-en.svg",
     language: "Japanese",
     accent: "JA",
   },
@@ -199,24 +126,97 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  "104_old": {
-    name: "Old Voice 104 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
-  "192_old": {
-    name: "Old Voice 192 - Female",
-    avatar: "/aura-luna-en.svg",
-    language: "Japanese",
-    accent: "JA",
-  },
   "254_old": {
     name: "Old Voice 254 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
     accent: "JA",
   },
+  // "30": {
+  //   name: "Voice 30 - Female *",
+  //   avatar: "/aura-stella-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "106": {
+  //   name: "Voice 106 - Female",
+  //   avatar: "/aura-hera-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "95": {
+  //   name: "Voice 95 - Male",
+  //   avatar: "/aura-arcas-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "41": {
+  //   name: "Voice 41 - Male *",
+  //   avatar: "/aura-perseus-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "109": {
+  //   name: "Voice 109 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "195": {
+  //   name: "Voice 195 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "222": {
+  //   name: "Voice 222 - Male *",
+  //   avatar: "/aura-zeus-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "264": {
+  //   name: "Voice 264 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // // Old Models
+  // "15_old": {
+  //   name: "Old Voice 15 - Male",
+  //   avatar: "/aura-zeus-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "23_old": {
+  //   name: "Old Voice 23 - Male",
+  //   avatar: "/aura-zeus-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "78_old": {
+  //   name: "Old Voice 78 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "116_old": {
+  //   name: "Old Voice 116 - Male",
+  //   avatar: "/aura-zeus-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "104_old": {
+  //   name: "Old Voice 104 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
+  // "192_old": {
+  //   name: "Old Voice 192 - Female",
+  //   avatar: "/aura-luna-en.svg",
+  //   language: "Japanese",
+  //   accent: "JA",
+  // },
 };
 
 const voiceMap = (model: string) => {
