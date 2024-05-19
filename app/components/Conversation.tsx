@@ -88,8 +88,10 @@ export default function Conversation(): JSX.Element {
 
       if(prompt == '2'){
         model = "122";
-      }else if(prompt == '3'){
+      } else if(prompt == '3'){
         model = "31";
+      } else if(prompt == '4'){
+        model = "254";
       }
 
       const res = await fetch(`/api/speak?model=${model}`, {
