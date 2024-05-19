@@ -92,7 +92,7 @@ export default function Conversation(): JSX.Element {
         model = "254_old";
       } else if(prompt == '5'){
         model = "122";
-      } else if(prompt && prompt != ''){
+      } else if(prompt && prompt != '' && prompt != '1' && prompt != '2'){
         model = prompt;
       }
 
