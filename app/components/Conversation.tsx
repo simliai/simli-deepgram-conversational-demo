@@ -91,7 +91,7 @@ export default function Conversation(): JSX.Element {
       } else if(prompt == '3'){
         model = "31";
       } else if(prompt == '4'){
-        model = "254";
+        model = "254_old";
       }
 
       const res = await fetch(`/api/speak?model=${model}`, {
