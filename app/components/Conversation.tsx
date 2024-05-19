@@ -86,12 +86,14 @@ export default function Conversation(): JSX.Element {
       
       let model = ttsOptions?.model ?? "28";
 
-      if(prompt == '2'){
-        model = "122";
-      } else if(prompt == '3'){
+      if(prompt == '3'){
         model = "31";
       } else if(prompt == '4'){
         model = "254_old";
+      } else if(prompt == '5'){
+        model = "122";
+      } else if(prompt && prompt != ''){
+        model = prompt;
       }
 
       const res = await fetch(`/api/speak?model=${model}`, {
