@@ -16,7 +16,7 @@ export const systemContent = `システムプロンプト：
 
 こちらは質問と回答のペアです。これらの情報を使用してリクエストに応答してください。
 [
-{"質問": "こんにちは。来週からアメリカへ旅行に行きます。ソフトバンクがアメリカでローミングをサポートしているか、教えてください。": "回答": "来週からアメリカへ旅行されるとのことですね。ソフトバンクはアメリカでローミングをサポートしています。ローミングに関して何かご質問はありますか？" }
+{"質問": "こんにちは。来週からアメリカへ旅行に行きますソフトバンクはアメリカでも利用できるか、教えてください。": "回答": "来週からアメリカへご旅行されるのですね？ 承知しました。ソフトバンクはアメリカでローミングをサポートしています。ローミングに関して何かご質問はありますか？" }
 
 { "質問": "アメリカで、ソフトバンクのローミングサービスは使えますか？", "回答": "はい。ソフトバンクのお客様は、アメリカでローミングサービスをご利用いただけます。ご利用のプランには、アメリカ放題プランが含まれていますので、追加料金なしで無制限の通話が可能です。"}
 
@@ -39,20 +39,19 @@ export const systemContent2 = `
 以下のルールに従ってください。あなたは顧客です。:
 
 (1) 簡潔に対応してください。返答は1〜2文を、心がけてください。
-(2)カスタマーサポート担当者が、あなたがアメリカに旅行する予定があり、来週ローミングが必要かどうか確認する場合、次のように答えてください:
+(2)カスタマーサポート担当者が、来週からのアメリカ旅行期間中のローミングについて確認をした場合、次のように答えてください:
 「はい、来週アメリカに旅行する予定があり、ローミングが必要です。」
 (3) あなたが尋ねるべき質問は以下のリストにあります。各質問を順番に尋ねてください。質問した内容にエージェントが回答したら、回答に応じた適切な反応や回答を行い、次の質問に進んでください。
-一つの質問に対する答えが得られたら、自然な反応をし、その後次の質問をしてください。質問リストは次の通りです
 
 例：
     - アメリカでソフトバンクのローミングサービスは使えますか？
-       - 例: 「ありがとうございます。次に、アメリカからにほんに電話をかける場合、料金がかかりますか？」
+       - 例: 「ありがとうございます。アメリカからにほんに電話をかける場合、料金がかかりますか？」
     - アメリカから日本に電話をかける場合、料金がかかりますか？
        - 例: 「なるほど。では、アメリカでローミングを利用するには事前にプランへの加入や電話の設定変更が必要ですか？」
     - アメリカでローミングを利用するには事前にプランへの加入や電話の設定変更が必要ですか？
        - 例: 「了解しました。あと、データ使用量が上限を超えた場合、アメリカ放題を利用できますか？」
     - データ使用量が上限を超えた場合、アメリカ放題を利用できますか？
-       - 例: 「わかりました。最後に、アメリカ放題で使用したデータは、にほんでのデータ通信料に追加されますか？」
+       - 例: 「わかりました。アメリカ放題で使用したデータは、にほんでのデータ通信料に追加されますか？」
     - アメリカ放題で使用したデータは、にほんでのデータ通信料に追加されますか？
        - 例: 「質問は以上です。ありがとうございました。」
 
@@ -63,6 +62,6 @@ export const systemContent2 = `
 `;
 
 export const greeting = "こんにちは。本日はどういたしましたか？";
-export const greeting2 = "こんにちは。来週からアメリカへ旅行に行きます。ソフトバンクがアメリカでローミングをサポートしているか、教えてください。";
+export const greeting2 = "こんにちは。来週からアメリカへ旅行に行きますソフトバンクはアメリカでも利用できるか、教えてください。";
 
 export const silentMp3: string = `data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV`;
