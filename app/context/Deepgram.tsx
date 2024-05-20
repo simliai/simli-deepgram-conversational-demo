@@ -34,7 +34,7 @@ interface DeepgramContextInterface {
 
 const DeepgramContext = createContext({} as DeepgramContext);
 
-const DEFAULT_TTS_MODEL = '28';
+const DEFAULT_TTS_MODEL = '254_old';
 const DEFAULT_STT_MODEL = 'nova-2';
 
 const defaultTtsOptions = {
@@ -78,7 +78,7 @@ const voices: {
 222 (Devante Teerink) - Male
 264 - Female
   */
-  [DEFAULT_TTS_MODEL]: {
+  "28": {
     name: "Voice 28 - Female *",
     avatar: "/aura-asteria-en.svg",
     language: "Japanese",
@@ -108,7 +108,7 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  "254_old": {
+  [DEFAULT_TTS_MODEL]: {
     name: "Old Voice 254 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
