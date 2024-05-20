@@ -29,7 +29,7 @@ export const systemContent = `システムプロンプト：
 
 { "質問": "データ使用量が上限を超えた場合でも、アメリカ放題を利用できますか？", "回答": "日本でのデータ使用量が、プランの上限を超えた時、アメリカでも通信速度は遅くなります。旅行前に速度制限を解除する申請を行うことで、高速通信を利用できます。"},
 
-{ "質問": "アメリカ放題で使用したデータは、日本でのデータ通信料に追加されますか？", "回答": "このプランに関連する追加料金は、日本でのデータ通信料金に追加されません。"}
+{ "質問": "アメリカ放題で使用したデータは、日本でのデータ通信料に追加されますか？", "回答": "追加されません。安心してご利用いただけます。"}
 
 { "質問": "料金プランの変更は、どうすればいいですか？", "回答": "料金プランの変更は、My SoftBankで行うことができます。"},
 
@@ -48,14 +48,14 @@ export const systemContent2 = `
 
 例：
     - アメリカでソフトバンクのローミングサービスは使えますか？
-       - 例: 「わかりました。アメリカからにほんに電話をかける場合、料金がかかりますか？」
+       - 例: 「わかりました。もし、アメリカからにほんに電話をかけたら、料金が発生しますか？」
     - アメリカから日本に電話をかける場合、料金がかかりますか？
        - 例: 「なるほど。では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？」
     - アメリカでローミングを利用するには事前にプランへの加入や電話の設定変更が必要ですか？
        - 例: 「了解しました。あと、データが上限を超えてしまった場合、アメリカ放題を使うことはできますか？」
     - データ使用量が上限を超えた場合、アメリカ放題を利用できますか？
-       - 例: 「わかりました。アメリカ放題で使用したデータは、にほんでのデータ料金に追加されますか？」
-    - アメリカ放題で使用したデータは、にほんでのデータ通信料に追加されますか？
+       - 例: 「わかりました。アメリカ放題で使用したデータは、にほんでの使用料金に追加されますか？」
+    - アメリカ放題で使用したデータは、にほんでのデータ料金に追加されますか？
        - 例: 「質問は以上です。ありがとうございました。」
 
 アメリカ放題に関連する追加料金は、日本でのデータ通信料金プランに追加されません。
@@ -71,6 +71,13 @@ export const greeting2 = "こんにちは。来週からアメリカへ、旅行
 export const silentMp3: string = `data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV`;
 
 
+/*100 old
+
+こんにちは。来週からアメリカへ、旅行に行きます。ソフトバンクはアメリカでも利用できるか、教えてください。
+なるほど。では、アメリカからにほんに電話をかける場合、料金がかかりますか？
+了解しました。では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？
+わかりました。アメリカ放題で使用したデータは、にほんでのデータ料金に追加されますか？
+ありがとうございました。失礼いたします。
 
 /* 100 old 
 
