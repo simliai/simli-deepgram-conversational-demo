@@ -87,10 +87,10 @@ export default function Conversation(): JSX.Element {
       
       let model = ttsOptions?.model ?? "28";
 
-      if(prompt == '2'){
+      if(prompt == '2' && (!voice || voice == '')){
         model = '122';
       }
-      
+
       if(voice && voice != ''){
         model = voice;
       }
