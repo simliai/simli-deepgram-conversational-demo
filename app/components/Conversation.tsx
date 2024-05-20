@@ -23,7 +23,7 @@ import { Controls } from "./Controls";
 import { InitialLoad } from "./InitialLoad";
 import { MessageMetadata } from "../lib/types";
 import { RightBubble } from "./RightBubble";
-import { greeting, greeting2, systemContent, systemContent2 } from "../lib/constants";
+import { greeting, greeting2, greeting3, systemContent, systemContent2, systemContent3 } from "../lib/constants";
 import { useDeepgram } from "../context/Deepgram";
 import { useMessageData } from "../context/MessageMetadata";
 import { useMicrophone } from "../context/Microphone";
@@ -87,7 +87,7 @@ export default function Conversation(): JSX.Element {
       
       let model = ttsOptions?.model ?? "28";
 
-      if(prompt == '2' && (!voice || voice == '')){
+      if(prompt == '2' || prompt == '3' && (!voice || voice == '')){
         model = '254_old';
       }
 
@@ -143,6 +143,9 @@ export default function Conversation(): JSX.Element {
   if(prompt == '2'){
     systemPrompt = systemContent2;
     greetingChoice = greeting2;
+  } else if(prompt == '3'){
+    systemPrompt = systemContent3;
+    greetingChoice = greeting3;
   } else {
     systemPrompt = systemContent;
     greetingChoice = greeting;

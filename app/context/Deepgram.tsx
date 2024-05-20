@@ -97,7 +97,7 @@ const voices: {
     accent: "JA",
   },
   "93_old": {
-    name: "Old Voice 93 - Male",
+    name: "Voice 93 - Male",
     avatar: "/aura-zeus-en.svg",
     language: "Japanese",
     accent: "JA",
@@ -109,7 +109,7 @@ const voices: {
     accent: "JA",
   },
   "254_old": {
-    name: "Old Voice 254 - Female",
+    name: "Voice 254 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
     accent: "JA",
@@ -121,7 +121,7 @@ const voices: {
     accent: "JA",
   },
   "100_old": {
-    name: "Old Voice 100 - Female",
+    name: "Voice 100 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
     accent: "JA",
