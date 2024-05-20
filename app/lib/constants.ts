@@ -48,7 +48,7 @@ export const systemContent2 = `
 
 例：
     - アメリカでソフトバンクのローミングサービスは使えますか？
-       - 例: 「わかりました。もし、アメリカからにほんに電話をかけたら、料金が発生しますか？」
+       - 例: 「わかりました。もし、アメリカからにほんに電話をかけたら、料金がかかりますか？」
     - もし、アメリカからにほんに電話をかけたら、料金が発生しますか？
        - 例: 「なるほど。では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？」
     - では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？
@@ -71,7 +71,29 @@ export const greeting2 = "こんにちは。来週からアメリカへ、旅行
 export const silentMp3: string = `data:audio/mp3;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV`;
 
 
+
+
+/* 
+
+例：
+    - アメリカでソフトバンクのローミングサービスは使えますか？
+       - 例: 「わかりました。もし、アメリカからにほんに電話をかけたら、料金が発生しますか？」
+    - もし、アメリカからにほんに電話をかけたら、料金が発生しますか？
+       - 例: 「なるほど。では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？」
+    - では、アメリカでローミングを利用するには、事前にプランへの加入や、電話の設定変更が必要ですか？
+       - 例: 「了解しました。あと、データが上限を超えてしまった場合、アメリカ放題を使うことはできますか？」
+    - あと、データが上限を超えてしまった場合、アメリカ放題を使うことはできますか？
+       - 例: 「わかりました。アメリカ放題で使用したデータは、にほんでの使用料金に追加されますか？」
+    - アメリカ放題で使用したデータは、にほんでの使用料金に追加されますか？
+       - 例: 「質問は以上です。ありがとうございました。」
+
+*/ 
+
+
+
 /*100 old
+
+発生しますか
 
 こんにちは。来週からアメリカへ、旅行に行きます。ソフトバンクはアメリカでも利用できるか、教えてください。
 なるほど。では、アメリカからにほんに電話をかける場合、料金がかかりますか？
