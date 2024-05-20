@@ -34,7 +34,7 @@ interface DeepgramContextInterface {
 
 const DeepgramContext = createContext({} as DeepgramContext);
 
-const DEFAULT_TTS_MODEL = '254_old';
+const DEFAULT_TTS_MODEL = '122';
 const DEFAULT_STT_MODEL = 'nova-2';
 
 const defaultTtsOptions = {
@@ -84,7 +84,7 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  "122": {
+  [DEFAULT_TTS_MODEL]: {
     name: "Voice 122 - Male",
     avatar: "/aura-orpheus-en.svg",
     language: "Japanese",
@@ -108,7 +108,7 @@ const voices: {
     language: "Japanese",
     accent: "JA",
   },
-  [DEFAULT_TTS_MODEL]: {
+  "254_old": {
     name: "Old Voice 254 - Female",
     avatar: "/aura-luna-en.svg",
     language: "Japanese",
