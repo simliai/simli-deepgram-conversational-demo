@@ -14,11 +14,14 @@ import {
 import { useDeepgram, voiceMap, voices } from "../context/Deepgram";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useToast } from "../context/Toast";
+import './styles.css';
 
 const arrayOfVoices = Object.entries(voices).map((e) => ({
   ...e[1],
   model: e[0],
 }));
+
+const isVisible = false;
 
 const ModelSelection = ({
   model,
@@ -27,82 +30,87 @@ const ModelSelection = ({
   model: string;
   setModel: Dispatch<SetStateAction<string>>;
 }) => {
-  return (
-    <Select
-      defaultSelectedKeys={["aura-model-asteria"]}
-      selectedKeys={[model]}
-      onSelectionChange={(keys: any) =>
-        setModel(keys.entries().next().value[0])
-      }
-      items={arrayOfVoices}
-      label="Selected voice"
-      color="default"
-      variant="bordered"
-      classNames={{
-        label: "group-data-[filled=true]:-translate-y-5",
-        trigger: "min-h-unit-16",
-        listboxWrapper: "max-h-[400px]",
-      }}
-      listboxProps={{
-        itemClasses: {
-          base: [
-            "rounded-md",
-            "text-default-500",
-            "transition-opacity",
-            "data-[hover=true]:text-foreground",
-            "data-[hover=true]:bg-default-100",
-            "data-[hover=true]:bg-default-50",
-            "data-[selectable=true]:focus:bg-default-50",
-            "data-[pressed=true]:opacity-70",
-            "data-[focus-visible=true]:ring-default-500",
-          ],
-        },
-      }}
-      popoverProps={{
-        classNames: {
-          base: "before:bg-default-200",
-          content: "p-0 border-small border-divider bg-background",
-        },
-      }}
-      renderValue={(items) => {
-        return items.map((item) => (
-          <div key={item.key} className="flex items-center gap-2">
-            <Avatar
-              alt={item.data?.name}
-              className="flex-shrink-0"
-              size="sm"
-              src={item.data?.avatar}
-            />
-            <div className="flex flex-col">
-              <span>{item.data?.name}</span>
-              <span className="text-default-500 text-tiny">
-                ({item.data?.model} - {item.data?.language} {item.data?.accent})
-              </span>
+  if(!isVisible){
+    return "";
+  } else {
+    return (
+
+      <Select
+        defaultSelectedKeys={["aura-model-asteria"]}
+        selectedKeys={[model]}
+        onSelectionChange={(keys: any) =>
+          setModel(keys.entries().next().value[0])
+        }
+        items={arrayOfVoices}
+        label="Selected voice"
+        color="default"
+        variant="bordered"
+        classNames={{
+          label: "group-data-[filled=true]:-translate-y-5",
+          trigger: "min-h-unit-16",
+          listboxWrapper: "max-h-[400px]",
+        }}
+        listboxProps={{
+          itemClasses: {
+            base: [
+              "rounded-md",
+              "text-default-500",
+              "transition-opacity",
+              "data-[hover=true]:text-foreground",
+              "data-[hover=true]:bg-default-100",
+              "data-[hover=true]:bg-default-50",
+              "data-[selectable=true]:focus:bg-default-50",
+              "data-[pressed=true]:opacity-70",
+              "data-[focus-visible=true]:ring-default-500",
+            ],
+          },
+        }}
+        popoverProps={{
+          classNames: {
+            base: "before:bg-default-200",
+            content: "p-0 border-small border-divider bg-background",
+          },
+        }}
+        renderValue={(items) => {
+          return items.map((item) => (
+            <div key={item.key} className="flex items-center gap-2">
+              <Avatar
+                alt={item.data?.name}
+                className="flex-shrink-0"
+                size="sm"
+                src={item.data?.avatar}
+              />
+              <div className="flex flex-col">
+                <span>{item.data?.name}</span>
+                <span className="text-default-500 text-tiny">
+                  ({item.data?.model} - {item.data?.language} {item.data?.accent})
+                </span>
+              </div>
             </div>
-          </div>
-        ));
-      }}
-    >
-      {(model) => (
-        <SelectItem key={model.model} textValue={model.model} color="default">
-          <div className="flex gap-2 items-center">
-            <Avatar
-              alt={model.name}
-              className="flex-shrink-0"
-              size="sm"
-              src={model.avatar}
-            />
-            <div className="flex flex-col">
-              <span className="text-small">{model.name}</span>
-              <span className="text-tiny text-default-400">
-                {model.model} - {model.language} {model.accent}
-              </span>
+          ));
+        }}
+      >
+        {(model) => (
+          <SelectItem key={model.model} textValue={model.model} color="default">
+            <div className="flex gap-2 items-center">
+              <Avatar
+                alt={model.name}
+                className="flex-shrink-0"
+                size="sm"
+                src={model.avatar}
+              />
+              <div className="flex flex-col">
+                <span className="text-small">{model.name}</span>
+                <span className="text-tiny text-default-400">
+                  {model.model} - {model.language} {model.accent}
+                </span>
+              </div>
             </div>
-          </div>
-        </SelectItem>
-      )}
-    </Select>
-  );
+          </SelectItem>
+        )}
+      </Select>
+    );
+  }
 };
 
 export const Settings = () => {
@@ -114,7 +122,7 @@ export const Settings = () => {
 
   return (
     <>
-      <div className="flex items-center gap-2.5 text-sm">
+      <div className="flex items-center gap-2.5 text-sm hidden">
         <span className="bg-gradient-to-r to-[#13EF93]/50 from-[#149AFB]/80 rounded-full flex">
           <a
             className={`relative m-px bg-black md:w-[9.25rem] w-10 h-10 rounded-full text-sm p-2.5 group md:hover:w-[9.25rem] transition-all ease-in-out duration-1000 overflow-hidden whitespace-nowrap`}
