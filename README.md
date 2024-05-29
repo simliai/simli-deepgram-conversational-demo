@@ -19,7 +19,7 @@ Check out our [KNOWN ISSUES](./KNOWN_ISSUES.md) before reporting.
 ## Demo features
 
 - Capture streaming audio using [Deepgram Streaming Speech to Text](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
-- Natural Language responses using an OpenAI LLM.
+- Natural Language responses using an Amazon Bedrock LLM.
 - Speech to Text conversion using [Deepgram Aura Text to Speech](https://developers.deepgram.com/docs/text-to-speech).
 
 ## What is Deepgram?
@@ -62,7 +62,9 @@ AWS_SECRET_ACCESS_KEY=YOUR-AWS_SECRET_ACCESS_KEY
 
 1. For `DEEPGRAM_API_KEY` paste in the key you generated in the [Deepgram console](https://console.deepgram.com/).
 2. Set `DEEPGRAM_STT_DOMAIN` to be `https://api.deepgram.com`.
-3. `OPENAI_API_KEY` should be an OpenAI API Key that can access the chat completions API.
+3. Set `AWS_REGION`
+4. Set `AWS_ACCESS_KEY_ID`
+5. Set `AWS_SECRET_ACCESS_KEY`
 
 #### Run the application
 
