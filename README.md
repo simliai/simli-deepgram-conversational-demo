@@ -55,7 +55,9 @@ Copy the code from `sample.env.local` and create a new file called `.env.local`.
 ```bash
 DEEPGRAM_STT_DOMAIN=https://api.deepgram.com
 DEEPGRAM_API_KEY=YOUR-DG-API-KEY
-OPENAI_API_KEY=YOUR-OPENAI-API-KEY
+AWS_REGION=YOUR-AWS_REGION
+AWS_ACCESS_KEY_ID=YOUR-AWS_ACCESS_KEY_ID
+AWS_SECRET_ACCESS_KEY=YOUR-AWS_SECRET_ACCESS_KEY
 ```
 
 1. For `DEEPGRAM_API_KEY` paste in the key you generated in the [Deepgram console](https://console.deepgram.com/).
