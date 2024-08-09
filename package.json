@@ -35,6 +35,7 @@
     "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^10.0.4",
     "remark-gfm": "^4.0.0",
+    "simli-client": "^1.0.0",
     "swr": "^2.2.4"
   },
   "devDependencies": {

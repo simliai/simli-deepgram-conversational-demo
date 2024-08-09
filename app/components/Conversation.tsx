@@ -28,12 +28,16 @@ import { useDeepgram } from "../context/Deepgram";
 import { useMessageData } from "../context/MessageMetadata";
 import { useMicrophone } from "../context/Microphone";
 import { useAudioStore } from "../context/AudioStore";
+import { SimliClient } from "simli-client";
 
-import SimliFaceStream from "./SimliFaceStream/SimliFaceStream";
-import { StartAudioToVideoSession } from "./SimliFaceStream/startAudioToVideoSession";
+const simliClient = new SimliClient();
 
-interface SimliFaceStreamRef {
-  sendAudioData: (pcm16Array: Uint8Array) => void;
+interface SimliClientConfig {
+  apiKey: string;
+  faceID: string;
+  handleSilence: boolean;
+  videoRef: React.RefObject<HTMLVideoElement>;
+  audioRef: React.RefObject<HTMLAudioElement>;
 }
 
 /**
@@ -44,10 +48,9 @@ export default function Conversation(): JSX.Element {
   /**
    * Custom context providers
    */
-  const simliFaceStreamRef = useRef<SimliFaceStreamRef | null>(null);
-  const [faceId, setFaceId] = useState("tmp9i8bbq7c");
-  const [sessionToken, setSessionToken] = useState("");
-
+  
+  const videoRef = useRef(null);
+  const audioRef = useRef(null);
   const { ttsOptions, connection, connectionReady } = useDeepgram();
   const { addAudio } = useAudioStore();
   const { player, stop: stopAudio, play: startAudio } = useNowPlaying();
@@ -147,9 +150,7 @@ export default function Conversation(): JSX.Element {
 
       convertMp3ToPcm16(blob).then((pcm16Array) => {
         console.log("PCM16 Array:", pcm16Array);
-        if (simliFaceStreamRef.current) {
-          simliFaceStreamRef.current.sendAudioData(pcm16Array);
-        }
+        simliClient.sendAudioData(pcm16Array);
         addAudio({
           id: message.id,
           blob,
@@ -323,31 +324,36 @@ export default function Conversation(): JSX.Element {
   const startConversation = useCallback(() => {
     if (!initialLoad) return;
 
-    StartAudioToVideoSession(faceId, true, true).then((response) => {
-      console.log("Session Token:", response);
-      setSessionToken(response.session_token);
+    const simliConfig: SimliClientConfig = {
+      apiKey: process.env.NEXT_PUBLIC_SIMLI_API_KEY || '',
+      faceID: 'tmp9i8bbq7c',
+      handleSilence: true,
+      videoRef: videoRef,
+      audioRef: audioRef,
+    };
+    
+    simliClient.Initialize(simliConfig);
 
-      setInitialLoad(false);
+    simliClient.start();
 
-      // add a stub message data with no latency
-      const welcomeMetadata: MessageMetadata = {
-        ...greetingMessage,
-        ttsModel: ttsOptions?.model,
-      };
+    setInitialLoad(false);
 
-      addMessageData(welcomeMetadata);
+    // add a stub message data with no latency
+    const welcomeMetadata: MessageMetadata = {
+      ...greetingMessage,
+      ttsModel: ttsOptions?.model,
+    };
 
-      // get welcome audio
-      requestWelcomeAudio();
-    });
+    addMessageData(welcomeMetadata);
+
+    // get welcome audio
+    requestWelcomeAudio();
   }, [
     addMessageData,
     greetingMessage,
     initialLoad,
     requestWelcomeAudio,
     ttsOptions?.model,
-    StartAudioToVideoSession,
-    setSessionToken,
   ]);
 
   useEffect(() => {
@@ -527,20 +533,15 @@ export default function Conversation(): JSX.Element {
                   <div className="w-full h-[256px] flex justify-center items-center">
                     <div className=" relative h-[256px] w-[256px] rounded-full overflow-hidden">
                       <div className="scale-50 absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" >
-                        <SimliFaceStream
-                          ref={simliFaceStreamRef}
-                          start={true}
-                          sessionToken={sessionToken}
-                          minimumChunkSize={12}
-                        />
+                        <video ref={videoRef} autoPlay playsInline ></video>
+                        <audio ref={audioRef} autoPlay ></audio>
                       </div>
                     </div>
                   </div>
                 )}
                 <div
-                  className={`flex flex-col h-full overflow-hidden ${
-                    initialLoad ? "justify-center" : "justify-end"
-                  }`}
+                  className={`flex flex-col h-full overflow-hidden ${initialLoad ? "justify-center" : "justify-end"
+                    }`}
                 >
                   <div className="grid grid-cols-12 overflow-x-auto gap-y-2">
                     {initialLoad ? (
