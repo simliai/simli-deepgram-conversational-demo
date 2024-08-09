@@ -11,7 +11,13 @@ import { NextUIProvider } from "@nextui-org/react";
 import { useMicVAD } from "@ricky0123/vad-react";
 import { useNowPlaying } from "react-nowplaying";
 import { useQueue } from "@uidotdev/usehooks";
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useMemo,
+} from "react";
 
 import { ChatBubble } from "./ChatBubble";
 import {
@@ -48,7 +54,7 @@ export default function Conversation(): JSX.Element {
   /**
    * Custom context providers
    */
-  
+
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const { ttsOptions, connection, connectionReady } = useDeepgram();
@@ -321,39 +327,40 @@ export default function Conversation(): JSX.Element {
     requestTtsAudio(greetingMessage);
   }, [greetingMessage, requestTtsAudio]);
 
-  const startConversation = useCallback(() => {
+  const startConversation = useCallback(async () => {
     if (!initialLoad) return;
 
     const simliConfig: SimliClientConfig = {
-      apiKey: process.env.NEXT_PUBLIC_SIMLI_API_KEY || '',
-      faceID: 'tmp9i8bbq7c',
+      apiKey: process.env.NEXT_PUBLIC_SIMLI_API_KEY || "",
+      faceID: "tmp9i8bbq7c",
       handleSilence: true,
       videoRef: videoRef,
       audioRef: audioRef,
     };
-    
+
     simliClient.Initialize(simliConfig);
 
-    simliClient.start();
+    simliClient.start().then(() => {
+      setInitialLoad(false);
 
-    setInitialLoad(false);
+      // add a stub message data with no latency
+      const welcomeMetadata: MessageMetadata = {
+        ...greetingMessage,
+        ttsModel: ttsOptions?.model,
+      };
 
-    // add a stub message data with no latency
-    const welcomeMetadata: MessageMetadata = {
-      ...greetingMessage,
-      ttsModel: ttsOptions?.model,
-    };
+      addMessageData(welcomeMetadata);
 
-    addMessageData(welcomeMetadata);
-
-    // get welcome audio
-    requestWelcomeAudio();
+      // get welcome audio
+      requestWelcomeAudio();
+    });
   }, [
     addMessageData,
     greetingMessage,
     initialLoad,
     requestWelcomeAudio,
     ttsOptions?.model,
+    simliClient,
   ]);
 
   useEffect(() => {
@@ -532,16 +539,17 @@ export default function Conversation(): JSX.Element {
                 {!initialLoad && (
                   <div className="w-full h-[256px] flex justify-center items-center">
                     <div className=" relative h-[256px] w-[256px] rounded-full overflow-hidden">
-                      <div className="scale-50 absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2" >
-                        <video ref={videoRef} autoPlay playsInline ></video>
-                        <audio ref={audioRef} autoPlay ></audio>
+                      <div className="scale-50 absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+                        <video ref={videoRef} autoPlay playsInline></video>
+                        <audio ref={audioRef} autoPlay></audio>
                       </div>
                     </div>
                   </div>
                 )}
                 <div
-                  className={`flex flex-col h-full overflow-hidden ${initialLoad ? "justify-center" : "justify-end"
-                    }`}
+                  className={`flex flex-col h-full overflow-hidden ${
+                    initialLoad ? "justify-center" : "justify-end"
+                  }`}
                 >
                   <div className="grid grid-cols-12 overflow-x-auto gap-y-2">
                     {initialLoad ? (
